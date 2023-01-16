@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  background-color: #f1f1f1;
+}
+
+@layer components {
+  section {
+    @apply sm:min-h-[600px];
+  }
+  .signup-form,
+  .signin-form {
+    @apply flex flex-col w-full gap-6 sm:gap-8;
+  }
+  .form-control {
+    @apply w-full relative;
+  }
+  .input-error {
+    @apply absolute -bottom-4 text-red-500 left-0 text-[12px] xs:text-xs;
+  }
+  .cart-action {
+    @apply border bg-white border-dark-grey rounded-sm hover:text-white transition duration-200 hover:bg-dark-grey aspect-square w-6 h-6 text-lg flex items-center justify-center;
+  }
+  .cart-action.add {
+    @apply bg-dark-grey text-white;
+  }
+  .password-error {
+    @apply -bottom-4 text-red-500 left-0 text-[12px] xs:text-xs list-disc -mt-5 ml-4;
+  }
+  .form-control input {
+    @apply w-full border border-light-grey;
+  }
+  .input {
+    @apply text-sm xs:text-base bg-light-grey p-2 rounded-md outline-none font-normal text-dark-grey placeholder:text-dark-grey;
+  }
+  .input-wrapper {
+    @apply flex flex-col gap-6 sm:gap-8 sm:flex-row sm:justify-between;
+  }
+  .input-wrapper .form-control {
+    @apply sm:w-1/2;
+  }
+  .input-wrapper .form-control input,
+  .input-wrapper .form-control select {
+    @apply w-full text-sm xs:text-base bg-light-grey border border-light-grey p-2 rounded-md outline-none font-normal text-dark-grey placeholder:text-dark-grey;
+  }
+  .form-control.invalid input,
+  .form-control.invalid select {
+    @apply border-red-600 bg-red-100;
+  }
+  .input-wrapper .form-control select option {
+    @apply bg-white;
+  }
+
+  .primary-btn {
+    @apply text-sm xs:text-base bg-primary text-white px-[20px] py-[7px] rounded-md w-max hover:bg-[#03b100] transition duration-150 ease-in-out;
+  }
+  .btn-alt {
+    @apply text-sm xs:text-base bg-[#e9e9e9] text-[#6F7285] px-[20px] py-[5px] rounded-md w-max hover:bg-[#dddddd] transition duration-150 ease-in-out;
+  }
+  .secondary-btn {
+    @apply text-sm xs:text-base bg-white text-primary px-[20px] py-[7px] rounded-md w-max border border-primary hover:bg-secondary transition duration-150 ease-in-out;
+  }
+}
