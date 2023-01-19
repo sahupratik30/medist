@@ -29,7 +29,7 @@ function Navbar() {
           />
         </Link>
         <nav>
-          <ul className="hidden md:flex items-center gap-5 text-sm xs:text-base">
+          <ul className="hidden lg:flex items-center gap-5 text-sm xs:text-base">
             <li>
               <NavLink
                 to="/"
@@ -73,19 +73,22 @@ function Navbar() {
             </li>
           </ul>
         </nav>
-        <div className="hidden md:flex gap-12 items-center">
-          <Link to="/cart" className="relative">
-            <i className="fa-solid fa-cart-shopping fa-lg"></i>
-            <small className="absolute bg-light-red aspect-square text-white -top-2 -right-2 rounded-lg flex justify-center items-center w-5 h-4">
-              {totalCartItems}
-            </small>
-          </Link>
-          <Button className="primary-btn" onClick={handleClick}>
-            <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
-          </Button>
+        <div className="flex items-center gap-8">
+          <div className="hidden lg:flex gap-8 items-center">
+            <Link to="/cart" className="relative">
+              <i className="fa-solid fa-cart-shopping fa-lg"></i>
+              <small className="absolute bg-light-red aspect-square text-white -top-2 -right-2 rounded-lg flex justify-center items-center w-5 h-4">
+                {totalCartItems}
+              </small>
+            </Link>
+            <Button className="primary-btn" onClick={handleClick}>
+              <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
+            </Button>
+          </div>
         </div>
+
         <i
-          className="fa-solid fa-bars fa-lg text-primary md:hidden block"
+          className="fa-solid fa-bars fa-lg text-primary lg:hidden block"
           onClick={toggleMobileMenu}
         ></i>
       </div>

@@ -11,7 +11,7 @@ const MobileMenu = (props) => {
     navigate("/signin");
   }
   const activeClassName = "text-primary";
-  const mobileMenuClasses = `md:hidden fixed top-0 z-10 right-0 bg-white shadow-lg flex flex-col gap-3 h-screen w-3/4 s:w-1/2 md:w-1/3 pl-6 transition duration-300 ${props.className}`;
+  const mobileMenuClasses = `lg:hidden fixed top-0 z-10 right-0 bg-white shadow-lg flex flex-col gap-3 h-screen w-3/4 s:w-1/2 md:w-1/3 pl-6 transition duration-300 ${props.className}`;
 
   return (
     <div className={mobileMenuClasses}>
