@@ -9,11 +9,11 @@ import {
   diabetes,
   eye,
   boneAndJoint,
-} from "../assets";
+} from "../assets/images";
 
 const CategorySection = () => {
   return (
-    <section className="bg-[#f1f1f1] pb-16">
+    <section id="categories" className="bg-[#f1f1f1] pb-16">
       <div className="container pt-8 xs:pt-10 md:pt-24">
         <h2 className="text-center text-xl xs:text-2xl md:text-4xl font-bold mb-4">
           Shop By Category

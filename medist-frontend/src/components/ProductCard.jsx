@@ -4,7 +4,7 @@ import Button from "../UI/Button";
 import { formatPrice } from "./../helpers";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { cartActions } from "./../store/cart-slice";
+import { addItemToCart } from "./../store/cart-slice";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const ProductCard = (props) => {
   }
   function addToCartHandler() {
     dispatch(
-      cartActions.addItemToCart({
+      addItemToCart({
         id,
         name: pname,
         manufacturer,

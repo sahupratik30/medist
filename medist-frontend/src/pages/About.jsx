@@ -1,6 +1,6 @@
 import React from "react";
 
-import aboutImg from "../assets/about.png";
+import aboutImg from "../assets/images/about.png";
 import Button from "../UI/Button";
 import { useNavigate } from "react-router-dom";
 

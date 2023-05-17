@@ -31,7 +31,9 @@ const useInput = (validateInput) => {
     inputReducer,
     defaultInputState
   );
-  const isValid = validateInput(inputState.value) && inputState.isTouched;
+  const isValid = validateInput
+    ? validateInput(inputState.value) && inputState.isTouched
+    : null;
   const hasError = !isValid && inputState.isTouched;
 
   const changeHandler = (event) => {

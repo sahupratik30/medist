@@ -12,7 +12,7 @@ module.exports = {
         "extra-light-grey": "#f6f6f7",
       },
       backgroundImage: {
-        hero: "url('./src/assets/hero-bg.jpg')",
+        hero: "url('./src/assets/images/hero-bg.jpg')",
       },
     },
     fontFamily: {

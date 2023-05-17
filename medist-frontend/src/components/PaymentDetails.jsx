@@ -1,10 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { formatPrice } from "../helpers";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
+import { resetCart } from "./../store/cart-slice";
 
 const PaymentDetails = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const totalMrp = cartItems?.reduce(
@@ -15,6 +19,13 @@ const PaymentDetails = () => {
   const amountTotal = formatPrice(totalAmount);
   const mrpTotal = formatPrice(totalMrp);
   const discountTotal = formatPrice(totalDiscount);
+  function handleClick() {
+    navigate("/checkout");
+    dispatch(resetCart());
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("totalAmount");
+    localStorage.removeItem("totalQuantity");
+  }
   return (
     <Card className="p-4 lg:flex-[0.3] sticky top-20">
       <h2 className="text-dark-grey text-[12px] xs:text-sm">PAYMENT DETAILS</h2>
@@ -41,7 +52,9 @@ const PaymentDetails = () => {
             {amountTotal}
           </p>
         </div>
-        <Button className="primary-btn h-max">PAY NOW</Button>
+        <Button className="primary-btn h-max" onClick={handleClick}>
+          PAY NOW
+        </Button>
       </div>
     </Card>
   );

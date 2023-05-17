@@ -1,23 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-import logo from "../assets/logo.png";
+import logo from "../assets/images/logo.png";
+import {
+  getToken,
+  getUserName,
+  removeToken,
+  removeUserName,
+} from "../services/localStorageService";
+import { setAccessToken, unsetAccessToken } from "../store/auth-slice";
 import Button from "../UI/Button";
 import MobileMenu from "./MobileMenu";
 
 function Navbar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const totalCartItems = useSelector((state) => state.cart.totalQuantity);
+  const { access_token } = getToken();
+  const accessToken = useSelector((state) => state.auth.access_token);
+  const userName = getUserName();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   function handleClick() {
     navigate("/signin");
   }
   function toggleMobileMenu() {
     setShowMobileMenu(true);
   }
+  function handleLogout() {
+    removeToken();
+    removeUserName();
+    dispatch(unsetAccessToken());
+  }
+  useEffect(() => {
+    dispatch(setAccessToken(access_token));
+  }, []);
+
   const activeClassName = "text-primary";
+
   return (
     <header className="bg-white py-3 sticky top-0 z-20">
       <div className="container flex justify-between items-center">
@@ -28,6 +49,7 @@ function Navbar() {
             className="w-24 xs:w-28 md:w-32"
           />
         </Link>
+
         <nav>
           <ul className="hidden lg:flex items-center gap-5 text-sm xs:text-base">
             <li>
@@ -42,6 +64,7 @@ function Navbar() {
                 HOME
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/about"
@@ -54,11 +77,7 @@ function Navbar() {
                 ABOUT
               </NavLink>
             </li>
-            <li className="cursor-pointer flex items-center gap-1">
-              <NavLink to="/products/category">
-                CATEGORIES <i className="fa-solid fa-angle-down"></i>
-              </NavLink>
-            </li>
+
             <li>
               <NavLink
                 to="/products"
@@ -73,7 +92,14 @@ function Navbar() {
             </li>
           </ul>
         </nav>
+
         <div className="flex items-center gap-8">
+          {accessToken && (
+            <p className="text-primary font-medium text-sm xs:text-base">
+              Welcome, <span>{userName?.split(" ")[0]}</span>
+            </p>
+          )}
+
           <div className="hidden lg:flex gap-8 items-center">
             <Link to="/cart" className="relative">
               <i className="fa-solid fa-cart-shopping fa-lg"></i>
@@ -81,9 +107,16 @@ function Navbar() {
                 {totalCartItems}
               </small>
             </Link>
-            <Button className="primary-btn" onClick={handleClick}>
-              <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
-            </Button>
+
+            {!accessToken ? (
+              <Button className="primary-btn" onClick={handleClick}>
+                <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
+              </Button>
+            ) : (
+              <Button className="primary-btn" onClick={handleLogout}>
+                Logout
+              </Button>
+            )}
           </div>
         </div>
 
@@ -92,6 +125,7 @@ function Navbar() {
           onClick={toggleMobileMenu}
         ></i>
       </div>
+
       <MobileMenu
         onClose={() => setShowMobileMenu(false)}
         className={!showMobileMenu ? "translate-x-[110%]" : ""}

@@ -2,8 +2,8 @@ import React, { useReducer } from "react";
 import { useParams } from "react-router-dom";
 import Button from "../UI/Button";
 import { useDispatch, useSelector } from "react-redux";
-import formatPrice from "./../helpers/format-price";
-import { cartActions } from "./../store/cart-slice";
+import { addItemToCart } from "./../store/cart-slice";
+import { formatPrice } from "../helpers";
 
 const defaultProductState = { count: 1 };
 const productReducer = (state, action) => {
@@ -49,7 +49,7 @@ const Product = () => {
   };
   const addToCartHandler = () => {
     dispatch(
-      cartActions.addItemToCart({
+      addItemToCart({
         id,
         name: product?.pname,
         manufacturer: product?.manufacturer,

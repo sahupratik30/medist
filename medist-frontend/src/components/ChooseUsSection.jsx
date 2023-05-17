@@ -1,5 +1,5 @@
 import React from "react";
-import chooseUs from "../assets/choose-us.png";
+import chooseUs from "../assets/images/choose-us.png";
 
 const ChooseUsSection = () => {
   return (

@@ -1,15 +1,32 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import {
+  getToken,
+  removeToken,
+  removeUserName,
+} from "../services/localStorageService";
 import Button from "../UI/Button";
+import { setAccessToken, unsetAccessToken } from "./../store/auth-slice";
 
 const MobileMenu = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const totalCartItems = useSelector((state) => state.cart.totalQuantity);
+  const { access_token } = getToken();
+  const accessToken = useSelector((state) => state.auth.access_token);
 
   function handleClick() {
     navigate("/signin");
   }
+  function handleLogout() {
+    removeToken();
+    removeUserName();
+    dispatch(unsetAccessToken());
+  }
+  useEffect(() => {
+    dispatch(setAccessToken(access_token));
+  }, []);
   const activeClassName = "text-primary";
   const mobileMenuClasses = `lg:hidden fixed top-0 z-10 right-0 bg-white shadow-lg flex flex-col gap-3 h-screen w-3/4 s:w-1/2 md:w-1/3 pl-6 transition duration-300 ${props.className}`;
 
@@ -63,9 +80,15 @@ const MobileMenu = (props) => {
             </Link>
           </li>
           <li>
-            <Button className="primary-btn" onClick={handleClick}>
-              <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
-            </Button>
+            {!accessToken ? (
+              <Button className="primary-btn" onClick={handleClick}>
+                <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
+              </Button>
+            ) : (
+              <Button className="primary-btn" onClick={handleLogout}>
+                Logout
+              </Button>
+            )}
           </li>
         </ul>
         <i

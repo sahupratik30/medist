@@ -5,7 +5,11 @@ import Button from "../UI/Button";
 
 const SignupForm = () => {
   const [showPassword, setshowPassword] = useState(false);
-  const { isLoading, error, sendRequest: sendSignupData } = useFetch();
+  const {
+    isLoading,
+    error: signupErr,
+    sendRequest: sendSignupData,
+  } = useFetch();
   const {
     value: enteredName,
     isValid: nameIsValid,
@@ -14,44 +18,7 @@ const SignupForm = () => {
     blurHandler: nameBlurHandler,
     reset: resetName,
   } = useInput((value) => value.trim() !== "");
-  const {
-    value: enteredAge,
-    isValid: ageIsValid,
-    hasError: ageHasError,
-    changeHandler: ageChangeHandler,
-    blurHandler: ageBlurHandler,
-    reset: resetAge,
-  } = useInput(
-    (value) => value.trim() !== "" && !isNaN(Number(value)) && Number(value) > 0
-  );
 
-  const {
-    value: enteredGender,
-    isValid: genderIsValid,
-    hasError: genderHasError,
-    changeHandler: genderChangeHandler,
-    blurHandler: genderBlurHandler,
-    reset: resetGender,
-  } = useInput((value) => value !== "");
-
-  const {
-    value: enteredPhoneNumber,
-    isValid: phoneNumberIsValid,
-    hasError: phoneNumberHasError,
-    changeHandler: phoneNumberChangeHandler,
-    blurHandler: phoneNumberBlurHandler,
-    reset: resetPhoneNumber,
-  } = useInput((value) => {
-    let regex =
-      /^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/;
-    if (value.trim() === "") {
-      return false;
-    } else if (regex.test(value)) {
-      return true;
-    } else {
-      return false;
-    }
-  });
   const {
     value: enteredEmail,
     isValid: emailIsValid,
@@ -89,22 +56,9 @@ const SignupForm = () => {
     }
   });
 
-  const formIsValid =
-    nameIsValid &&
-    ageIsValid &&
-    genderIsValid &&
-    phoneNumberIsValid &&
-    emailIsValid &&
-    passwordIsValid;
+  const formIsValid = nameIsValid && emailIsValid && passwordIsValid;
 
   const nameInputClasses = nameHasError
-    ? "form-control invalid"
-    : "form-control";
-  const ageInputClasses = ageHasError ? "form-control invalid" : "form-control";
-  const genderInputClasses = genderHasError
-    ? "form-control invalid"
-    : "form-control";
-  const phoneNumberInputClasses = phoneNumberHasError
     ? "form-control invalid"
     : "form-control";
   const emailInputClasses = emailHasError
@@ -120,12 +74,10 @@ const SignupForm = () => {
       return;
     }
     const formData = {
-      fullname: enteredName,
-      age: enteredAge,
-      gender: enteredGender,
-      phonenumber: enteredPhoneNumber,
+      username: enteredName,
       email: enteredEmail,
       password: enteredPassword,
+      password2: enteredPassword,
     };
     sendSignupData({
       url: "http://127.0.0.1:8000/signup/",
@@ -134,13 +86,14 @@ const SignupForm = () => {
       body: formData,
     });
     resetName();
-    resetAge();
-    resetGender();
-    resetPhoneNumber();
     resetEmail();
     resetPassword();
+    if (!signupErr) {
+      alert("Sign Up Successful!");
+    } else {
+      alert(signupErr);
+    }
   };
-
   const togglePasswordHandler = () => {
     setshowPassword((prevState) => !prevState);
   };
@@ -150,7 +103,7 @@ const SignupForm = () => {
       <div className={nameInputClasses}>
         <input
           type="text"
-          placeholder="Full Name"
+          placeholder="Username"
           className="input"
           value={enteredName}
           onChange={nameChangeHandler}
@@ -159,49 +112,7 @@ const SignupForm = () => {
         />
         {nameHasError && <p className="input-error">**Name is required</p>}
       </div>
-      <div className="input-wrapper">
-        <div className={ageInputClasses}>
-          <input
-            type="text"
-            placeholder="Age"
-            value={enteredAge}
-            onChange={ageChangeHandler}
-            onBlur={ageBlurHandler}
-            required
-          />
-          {ageHasError && <p className="input-error">**Enter a valid age</p>}
-        </div>
-        <div className={genderInputClasses}>
-          <select
-            onChange={genderChangeHandler}
-            onBlur={genderBlurHandler}
-            value={enteredGender}
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Others">Others</option>
-          </select>
-          {genderHasError && (
-            <p className="input-error">**Please select a gender</p>
-          )}
-        </div>
-      </div>
-      <div className={phoneNumberInputClasses}>
-        <input
-          type="text"
-          placeholder="Phone Number"
-          className="input"
-          onChange={phoneNumberChangeHandler}
-          onBlur={phoneNumberBlurHandler}
-          value={enteredPhoneNumber}
-          required
-        />
-        {phoneNumberHasError && (
-          <p className="input-error">**Enter a valid phone number</p>
-        )}
-      </div>
+
       <div className={emailInputClasses}>
         <input
           type="email"
@@ -214,6 +125,7 @@ const SignupForm = () => {
         />
         {emailHasError && <p className="input-error">**Enter a valid email</p>}
       </div>
+
       <div className={passwordInputClasses}>
         <input
           type={showPassword ? "text" : "password"}
@@ -231,6 +143,7 @@ const SignupForm = () => {
           onClick={togglePasswordHandler}
         ></i>
       </div>
+
       {passwordHasError && (
         <ul className="password-error">
           <li>Should be atleast 8 characters</li>
@@ -240,6 +153,7 @@ const SignupForm = () => {
           <li>Must contain a special symbol</li>
         </ul>
       )}
+      
       <Button type="submit" className="primary-btn">
         Sign Up
       </Button>

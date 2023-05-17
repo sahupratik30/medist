@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import heroBg from "../assets/hero-bg.jpg";
-import heroImg from "../assets/hero-image.png";
+import heroBg from "../assets/images/hero-bg.jpg";
+import heroImg from "../assets/images/hero-image.png";
 import Button from "../UI/Button";
 
 const HeroSection = () => {
