@@ -26,7 +26,7 @@ body {
 
   .signup-form,
   .signin-form {
-    @apply flex flex-col w-full gap-6 sm:gap-8;
+    @apply flex flex-col w-full gap-4 sm:gap-10 xs:gap-11 xxs:gap-14;
   }
 
   .form-control {
@@ -34,7 +34,7 @@ body {
   }
 
   .input-error {
-    @apply absolute -bottom-4 text-red-500 left-0 text-[12px] xs:text-xs;
+    @apply absolute top-full text-red-500 left-0 text-[12px] xs:text-xs;
   }
 
   .cart-action {

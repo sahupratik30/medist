@@ -42,6 +42,6 @@ export const errorHandler = (error) => {
 };
 
 // function to show toast message
-export const showToast = (message, type = "error", duration = 4000, id) => {
+export const showToast = (message, type = "error", duration = 2000, id) => {
   toast[type](message, { duration, id });
 };

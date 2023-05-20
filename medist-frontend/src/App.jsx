@@ -10,11 +10,13 @@ import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
     <div className="App font-Poppins">
       <Router>
+        <Toaster position="top-center" reverseOrder={false} />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

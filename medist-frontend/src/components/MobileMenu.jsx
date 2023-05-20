@@ -63,7 +63,7 @@ const MobileMenu = (props) => {
 
           <li>
             <Link to="/cart" className="relative">
-              <i className="fa-solid fa-cart-shopping fa-lg"></i>
+              <i className="fa-solid fa-cart-shopping fa-lg" />
               <small className="absolute bg-light-red aspect-square text-white -top-2 -right-2 rounded-lg flex justify-center items-center w-5 h-4">
                 {totalCartItems}
               </small>
@@ -76,7 +76,7 @@ const MobileMenu = (props) => {
                 className="primary-btn"
                 onClick={() => navigate("/signin")}
               >
-                <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
+                <i className="fa-solid fa-circle-user fa-lg" /> Sign In
               </Button>
             ) : (
               <Button className="primary-btn" onClick={_handleLogout}>
@@ -88,7 +88,7 @@ const MobileMenu = (props) => {
         <i
           className="fa-solid fa-xmark fa-lg absolute top-6 right-5"
           onClick={props.onClose}
-        ></i>
+        />
       </nav>
     </div>
   );

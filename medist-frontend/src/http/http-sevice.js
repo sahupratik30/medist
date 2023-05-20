@@ -1,5 +1,5 @@
 import { structureQueryParams } from "../helpers";
-import { getToken } from './token-interceptor';
+import { getToken } from "./token-interceptor";
 
 export const makeGetRequest = async (
   url,
@@ -34,7 +34,13 @@ export const makeGetRequest = async (
           return res.json();
         })
         .then((jsonResponse) => {
-          resolve(jsonResponse);
+          if (jsonResponse?.error === "false") {
+            resolve(jsonResponse);
+          } else if (jsonResponse?.error === "true") {
+            reject(jsonResponse);
+          } else {
+            resolve(jsonResponse);
+          }
         })
         .catch((e) => {
           console.log("XHR GET Error: ", e);
@@ -76,9 +82,20 @@ export const makePostRequest = async (
         .then((res) => {
           return res.json();
         })
-        .then((jsonResponse) => {
-          resolve(jsonResponse);
-        })
+        .then(
+          (jsonResponse) => {
+            if (jsonResponse?.error === "false") {
+              resolve(jsonResponse);
+            } else if (jsonResponse?.error === "true") {
+              reject(jsonResponse);
+            } else {
+              resolve(jsonResponse);
+            }
+          },
+          (error) => {
+            reject(error);
+          }
+        )
         .catch((error) => {
           reject(error);
         });

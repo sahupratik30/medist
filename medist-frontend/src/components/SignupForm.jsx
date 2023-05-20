@@ -1,33 +1,221 @@
 import { useState } from "react";
 import Button from "./UI/Button";
+import { regexConfig } from "./../config/regex-config";
+import { errorHandler, showToast } from "../helpers";
+import { registerUser } from "../http/http-calls";
+import { useNavigate } from "react-router";
 
 const SignupForm = () => {
+  const [formFields, setFormFields] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [isDirty, setIsDirty] = useState({
+    name: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+  const [errors, setErrors] = useState({
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
+  });
   const [showPassword, setshowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const _togglePasswordHandler = () => {
     setshowPassword((prevState) => !prevState);
   };
 
-  const nameInputClasses = false
+  // function to validate form fields
+  const _validateFormFields = ({ newFormFields, newIsDirty }) => {
+    return new Promise((resolve) => {
+      let isFormValid = true;
+      const newErrors = { ...errors };
+
+      Object.keys(newFormFields).forEach((key) => {
+        if (newIsDirty[key]) {
+          switch (key) {
+            case "name":
+              if (newFormFields[key].length) {
+                if (
+                  regexConfig.name.test(
+                    String(newFormFields[key]).toLowerCase()
+                  )
+                ) {
+                  newIsDirty[key] = false;
+                  newErrors[key] = null;
+                } else {
+                  newErrors[key] =
+                    "*Must contain 2-25 characters without digits or special symbols";
+                  isFormValid = false;
+                }
+              } else {
+                newErrors[key] = "*Required";
+                isFormValid = false;
+              }
+              break;
+
+            case "email":
+              if (newFormFields[key].length) {
+                if (
+                  regexConfig.email.test(
+                    String(newFormFields[key]).toLowerCase()
+                  )
+                ) {
+                  newIsDirty[key] = false;
+                  newErrors[key] = null;
+                } else {
+                  newErrors[key] = "*Please enter a valid email address";
+                  isFormValid = false;
+                }
+              } else {
+                newErrors[key] = "*Required";
+                isFormValid = false;
+              }
+              break;
+
+            case "password":
+              if (newFormFields[key].length) {
+                if (regexConfig.password.test(String(newFormFields[key]))) {
+                  newIsDirty[key] = false;
+                  newErrors[key] = null;
+                } else {
+                  newErrors[key] =
+                    "*Alteast 8 characters, one uppercase, one lowercase, one digit & one special symbol";
+                  isFormValid = false;
+                }
+              } else {
+                newErrors[key] = "*Required";
+                isFormValid = false;
+              }
+              break;
+
+            case "confirmPassword":
+              if (newFormFields[key].length) {
+                if (newFormFields["password"] === newFormFields[key]) {
+                  newIsDirty[key] = false;
+                  newErrors[key] = null;
+                } else {
+                  newErrors[key] = "*Passwords do not match";
+                  isFormValid = false;
+                }
+              } else {
+                newErrors[key] = "*Required";
+                isFormValid = false;
+              }
+              break;
+
+            default:
+          }
+        }
+      });
+
+      setErrors((prev) => ({ ...prev, ...newErrors }));
+      setIsDirty((prev) => ({ ...prev, ...newIsDirty }));
+
+      resolve(isFormValid);
+    });
+  };
+
+  // function handle change in form fields
+  const _onChangeFormFields = (key, value) => {
+    const newFormFields = { ...formFields };
+
+    newFormFields[key] = value;
+    setFormFields(newFormFields);
+  };
+
+  // function to handle blur in form fields
+  const _onBlurFormFields = (key) => {
+    const newFormFields = { ...formFields };
+    const newIsDirty = { ...isDirty };
+
+    newIsDirty[key] = true;
+
+    _validateFormFields({ newFormFields, newIsDirty });
+  };
+
+  // function to handle signup
+  const _onSignup = async (e) => {
+    try {
+      if (e) e.preventDefault();
+
+      const newFormFields = { ...formFields };
+      const newIsDirty = {
+        name: true,
+        email: true,
+        password: true,
+        confirmPassword: true,
+      };
+
+      const isValid = await _validateFormFields({ newFormFields, newIsDirty });
+
+      if (!isValid) return;
+
+      // proceed to signup
+      setLoading(true);
+      const payload = {
+        username: newFormFields["name"],
+        email: newFormFields["email"],
+        password: newFormFields["password"],
+        password2: newFormFields["confirmPassword"],
+        tc: "True",
+      };
+
+      const res = await registerUser(payload);
+      showToast("Registered Successfully", "success", 2000, "register");
+      setLoading(false);
+      navigate("/signin");
+    } catch (error) {
+      errorHandler(error);
+      setLoading(false);
+    }
+  };
+
+  const nameInputClasses = errors["name"]
     ? "form-control invalid"
     : "form-control";
-  const emailInputClasses = false
+  const emailInputClasses = errors["email"]
     ? "form-control invalid"
     : "form-control";
-  const passwordInputClasses = false
-    ? "form-control relative invalid"
-    : "form-control relative";
+  const passwordInputClasses = errors["password"]
+    ? "form-control invalid"
+    : "form-control";
+  const confirmPasswordInputClasses = errors["confirmPassword"]
+    ? "form-control invalid"
+    : "form-control";
 
   return (
-    <form className="signup-form">
+    <form className="signup-form" onSubmit={(e) => _onSignup(e)}>
       <div className={nameInputClasses}>
-        <input type="text" placeholder="Username" className="input" />
-        {/* {nameHasError && <p className="input-error">**Name is required</p>} */}
+        <input
+          type="text"
+          placeholder="Name"
+          className="input"
+          value={formFields["name"]}
+          onChange={(e) => _onChangeFormFields("name", e.target.value)}
+          onBlur={() => _onBlurFormFields("name")}
+        />
+        {errors["name"] && <p className="input-error">{errors["name"]}</p>}
       </div>
 
       <div className={emailInputClasses}>
-        <input type="email" placeholder="E-mail" className="input" />
-        {/* {emailHasError && <p className="input-error">**Enter a valid email</p>} */}
+        <input
+          type="email"
+          placeholder="E-mail"
+          className="input"
+          value={formFields["email"]}
+          onChange={(e) => _onChangeFormFields("email", e.target.value)}
+          onBlur={() => _onBlurFormFields("email")}
+        />
+        {errors["email"] && <p className="input-error">{errors["email"]}</p>}
       </div>
 
       <div className={passwordInputClasses}>
@@ -35,27 +223,45 @@ const SignupForm = () => {
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           className="input"
+          value={formFields["password"]}
+          onChange={(e) => _onChangeFormFields("password", e.target.value)}
+          onBlur={() => _onBlurFormFields("password")}
         />
         <i
           className={`text-dark-grey absolute top-1/2 right-3 -translate-y-1/2 fa-solid ${
             showPassword ? "fa-eye" : "fa-eye-slash"
           } cursor-pointer`}
           onClick={_togglePasswordHandler}
-        ></i>
+        />
+        {errors["password"] && (
+          <p className="input-error">{errors["password"]}</p>
+        )}
       </div>
 
-      {/* {passwordHasError && (
-        <ul className="password-error">
-          <li>Should be atleast 8 characters</li>
-          <li>Must contain one uppercase character</li>
-          <li>Must contain one lowercase character</li>
-          <li>Must contain one number</li>
-          <li>Must contain a special symbol</li>
-        </ul>
-      )} */}
+      <div className={confirmPasswordInputClasses}>
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Confirm Password"
+          className="input"
+          value={formFields["confirmPassword"]}
+          onChange={(e) =>
+            _onChangeFormFields("confirmPassword", e.target.value)
+          }
+          onBlur={() => _onBlurFormFields("confirmPassword")}
+        />
+        <i
+          className={`text-dark-grey absolute top-1/2 right-3 -translate-y-1/2 fa-solid ${
+            showPassword ? "fa-eye" : "fa-eye-slash"
+          } cursor-pointer`}
+          onClick={_togglePasswordHandler}
+        />
+        {errors["confirmPassword"] && (
+          <p className="input-error">{errors["confirmPassword"]}</p>
+        )}
+      </div>
 
-      <Button type="submit" className="primary-btn">
-        Sign Up
+      <Button type="submit" disabled={loading} className="primary-btn">
+        {loading ? "Sending..." : "Sign Up"}
       </Button>
     </form>
   );

@@ -92,7 +92,7 @@ const Navbar = () => {
 
           <div className="hidden lg:flex gap-8 items-center">
             <Link to="/cart" className="relative">
-              <i className="fa-solid fa-cart-shopping fa-lg"></i>
+              <i className="fa-solid fa-cart-shopping fa-lg" />
               <small className="absolute bg-light-red aspect-square text-white -top-2 -right-2 rounded-lg flex justify-center items-center w-5 h-4">
                 {totalCartItems}
               </small>
@@ -103,7 +103,7 @@ const Navbar = () => {
                 className="primary-btn"
                 onClick={() => navigate("/signin")}
               >
-                <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
+                <i className="fa-solid fa-circle-user fa-lg" /> Sign In
               </Button>
             ) : (
               <Button className="primary-btn" onClick={_handleLogout}>
@@ -116,7 +116,7 @@ const Navbar = () => {
         <i
           className="fa-solid fa-bars fa-lg text-primary lg:hidden block"
           onClick={_toggleMobileMenu}
-        ></i>
+        />
       </div>
 
       <MobileMenu
@@ -125,6 +125,6 @@ const Navbar = () => {
       />
     </header>
   );
-}
+};
 
 export default Navbar;

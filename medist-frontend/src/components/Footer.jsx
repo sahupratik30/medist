@@ -20,15 +20,15 @@ const Footer = () => {
 
           <div className="flex items-center gap-4">
             <a href="#">
-              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-facebook-f"></i>
+              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-facebook-f" />
             </a>
 
             <a href="#">
-              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-instagram"></i>
+              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-instagram" />
             </a>
 
             <a href="#">
-              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-twitter"></i>
+              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-twitter" />
             </a>
           </div>
         </div>
@@ -43,21 +43,21 @@ const Footer = () => {
           <ul className="mt-4 flex flex-col gap-2 text-white text-sm xs:text-base">
             <li>
               <Link to="/">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Home
               </Link>
             </li>
 
             <li>
               <Link to="/about">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 About
               </Link>
             </li>
 
             <li>
               <Link to="/products">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Products
               </Link>
             </li>
@@ -74,56 +74,56 @@ const Footer = () => {
           <ul className="mt-4 flex flex-col gap-2 text-white text-sm xs:text-base">
             <li>
               <Link to="/products/lung-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Lung Care
               </Link>
             </li>
 
             <li>
               <Link to="/products/liver-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Liver Care
               </Link>
             </li>
 
             <li>
               <Link to="/products/stomach-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Stomach Care
               </Link>
             </li>
 
             <li>
               <Link to="/products/heart-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Heart Care
               </Link>
             </li>
 
             <li>
               <Link to="/products/cold-and-fever">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Cold And Fever
               </Link>
             </li>
 
             <li>
               <Link to="/products/diabetes-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Diabetes Care
               </Link>
             </li>
 
             <li>
               <Link to="/products/eye-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Eye Care
               </Link>
             </li>
 
             <li>
               <Link to="/products/bone-and-joint-pain">
-                <i className="text-primary fa-solid fa-angle-right mr-2"></i>
+                <i className="text-primary fa-solid fa-angle-right mr-2" />
                 Bone and Joint Pain
               </Link>
             </li>
