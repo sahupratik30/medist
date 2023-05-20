@@ -1,5 +1,5 @@
 import { structureQueryParams } from "../helpers";
-import { getToken } from "../services/localStorageService";
+import { getToken } from './token-interceptor';
 
 export const makeGetRequest = async (
   url,

@@ -1,4 +1,4 @@
-import store from "../store";
+import { store } from './../redux/store';
 
 export const isUserAuthenticated = () => {
   const { auth } = store.getState();

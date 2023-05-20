@@ -1,18 +1,20 @@
 import React from "react";
 import { PaymentDetails } from "../components";
-import Card from "../UI/Card";
+import Card from "../components/UI/Card";
 import { CartItem } from "../components";
 import { useSelector } from "react-redux";
 
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state?.cart?.items);
   console.log(cartItems);
+
   if (cartItems.length === 0)
     return (
       <h1 className="text-center mt-10 text-xl xs:text-2xl md:text-3xl text-light-red">
         Your cart is empty!
       </h1>
     );
+
   return (
     <div className="mx-auto max-w-[996px] px-4 my-6">
       <h1 className="font-semibold text-lg xs:text-xl s:text-2xl mb-10">

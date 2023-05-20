@@ -9,21 +9,9 @@ import Signup from "./pages/Signup";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
-import useFetch from "./hooks/use-fetch";
-import { useDispatch } from "react-redux";
-import { setProducts } from "./store/products-slice";
-import { useEffect } from "react";
 import Checkout from "./pages/Checkout";
 
-function App() {
-  const { isLoading, error, sendRequest: fetchProducts } = useFetch();
-  const dispatch = useDispatch();
-  const loadProducts = (data) => {
-    dispatch(setProducts(data));
-  };
-  useEffect(() => {
-    fetchProducts({ url: "http://127.0.0.1:8000/products/" }, loadProducts);
-  }, []);
+const App = () => {
   return (
     <div className="App font-Poppins">
       <Router>
@@ -42,6 +30,6 @@ function App() {
       </Router>
     </div>
   );
-}
+};
 
 export default App;

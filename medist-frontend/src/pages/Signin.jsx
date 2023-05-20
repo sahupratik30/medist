@@ -1,21 +1,20 @@
 import { SigninForm } from "../components";
 import signinImage from "../assets/images/signin.png";
 import { Link, useNavigate } from "react-router-dom";
-import { getToken } from "../services/localStorageService";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setAccessToken } from "../store/auth-slice";
+import { useSelector } from "react-redux";
+import { isUserAuthenticated } from "../guards/auth-guard";
 
 const Signin = () => {
-  const { access_token } = getToken();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuthenticated = isUserAuthenticated();
+  
+  // If user is authenticated redirect to home page
   useEffect(() => {
-    if (access_token) {
-      dispatch(setAccessToken(access_token));
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [access_token]);
+  }, [isAuthenticated]);
 
   return (
     <div className="container flex items-center md:gap-12 lg:gap-48 justify-center  md:justify-between mt-14">
@@ -35,7 +34,7 @@ const Signin = () => {
           </p>
 
           <SigninForm />
-          
+
           <p className="text-sm xs:text-base mt-3 sm:mt-4">
             Don't have an account?{" "}
             <Link to="/signup" className="text-primary">

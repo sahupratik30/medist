@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Card from "../UI/Card";
+import Card from "./UI/Card";
 
 const CategoryCard = (props) => {
   return (

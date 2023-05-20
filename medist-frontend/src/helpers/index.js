@@ -1,3 +1,5 @@
+import { toast } from "react-hot-toast";
+
 // function to structure query parameters
 export const structureQueryParams = (params) => {
   let queryStrings = "?";
@@ -11,7 +13,7 @@ export const structureQueryParams = (params) => {
   return queryStrings;
 };
 
-// function to format price 
+// function to format price
 export const formatPrice = (amount) => {
   const formattedAmount = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -29,3 +31,17 @@ export const filterProducts = (products = [], filterConfig = {}) => {
   return filteredProducts;
 };
 
+// function to handle errors
+export const errorHandler = (error) => {
+  console.log("error>>", error);
+  showToast(
+    error?.reason?.length || error?.msg?.length
+      ? error?.reason || error?.msg
+      : "Something went wrong, Try again after some time."
+  );
+};
+
+// function to show toast message
+export const showToast = (message, type = "error", duration = 4000, id) => {
+  toast[type](message, { duration, id });
+};

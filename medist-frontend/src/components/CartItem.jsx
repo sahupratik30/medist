@@ -1,16 +1,17 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { removeItemFromCart } from "../store/cart-slice";
-import Button from "../UI/Button";
+import Button from "./UI/Button";
 import { formatPrice } from "../helpers";
+import { removeItemFromCart } from "../redux/slices/cart-slice";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
   const price = formatPrice(item.price);
   const mrp = formatPrice(item.mrp);
-  function removeFromCartHandler() {
+
+  const _removeFromCartHandler = () => {
     dispatch(removeItemFromCart(item.id));
-  }
+  };
   return (
     <div className="flex gap-4 items-start mb-10">
       <img src={item.image} className="w-16 xs:w-20" alt="" />
@@ -38,8 +39,8 @@ const CartItem = ({ item }) => {
               {mrp}
             </small>
           </p>
-          
-          <Button className="btn-alt" onClick={removeFromCartHandler}>
+
+          <Button className="btn-alt" onClick={_removeFromCartHandler}>
             Remove
           </Button>
         </div>

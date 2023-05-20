@@ -1,41 +1,31 @@
-import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
 import logo from "../assets/images/logo.png";
-import {
-  getToken,
-  getUserName,
-  removeToken,
-  removeUserName,
-} from "../services/localStorageService";
-import { setAccessToken, unsetAccessToken } from "../store/auth-slice";
-import Button from "../UI/Button";
+import Button from "./UI/Button";
 import MobileMenu from "./MobileMenu";
+import { resetAuthData } from "../redux/slices/auth-slice";
 
-function Navbar() {
+const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const totalCartItems = useSelector((state) => state.cart.totalQuantity);
-  const { access_token } = getToken();
-  const accessToken = useSelector((state) => state.auth.access_token);
-  const userName = getUserName();
+
+  const totalCartItems = useSelector((state) => state?.cart?.totalQuantity);
+  const { accessToken, user } = useSelector((state) => state?.auth || {});
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  function handleClick() {
-    navigate("/signin");
-  }
-  function toggleMobileMenu() {
+
+  const userName = user?.name;
+
+  // function to toggle mobile menu
+  const _toggleMobileMenu = () => {
     setShowMobileMenu(true);
-  }
-  function handleLogout() {
-    removeToken();
-    removeUserName();
-    dispatch(unsetAccessToken());
-  }
-  useEffect(() => {
-    dispatch(setAccessToken(access_token));
-  }, []);
+  };
+
+  // function to handle logout
+  const _handleLogout = () => {
+    dispatch(resetAuthData());
+  };
 
   const activeClassName = "text-primary";
 
@@ -109,11 +99,14 @@ function Navbar() {
             </Link>
 
             {!accessToken ? (
-              <Button className="primary-btn" onClick={handleClick}>
+              <Button
+                className="primary-btn"
+                onClick={() => navigate("/signin")}
+              >
                 <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
               </Button>
             ) : (
-              <Button className="primary-btn" onClick={handleLogout}>
+              <Button className="primary-btn" onClick={_handleLogout}>
                 Logout
               </Button>
             )}
@@ -122,7 +115,7 @@ function Navbar() {
 
         <i
           className="fa-solid fa-bars fa-lg text-primary lg:hidden block"
-          onClick={toggleMobileMenu}
+          onClick={_toggleMobileMenu}
         ></i>
       </div>
 

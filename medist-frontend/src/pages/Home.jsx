@@ -9,8 +9,9 @@ import {
   Footer,
 } from "../components";
 
-function Home() {
-  const products = useSelector((state) => state.products);
+const Home = () => {
+  const products = useSelector((state) => state?.products);
+
   return (
     <>
       <HeroSection />
@@ -21,6 +22,7 @@ function Home() {
           title="Bestsellers - Upto 50% Off"
         />
       )}
+
       {products.length > 0 && (
         <ProductsContainer
           products={products}
@@ -28,8 +30,10 @@ function Home() {
           title="Newly launched - Upto 70% Off"
         />
       )}
+
       <CategorySection />
       <ChooseUsSection />
+
       {products.length > 0 && (
         <ProductsContainer
           products={products}
@@ -40,6 +44,6 @@ function Home() {
       <Footer />
     </>
   );
-}
+};
 
 export default Home;

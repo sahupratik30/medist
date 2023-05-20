@@ -1,9 +1,9 @@
 import React, { useReducer } from "react";
 import { useParams } from "react-router-dom";
-import Button from "../UI/Button";
+import Button from "../components/UI/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart } from "./../store/cart-slice";
 import { formatPrice } from "../helpers";
+import { addItemToCart } from "../redux/slices/cart-slice";
 
 const defaultProductState = { count: 1 };
 const productReducer = (state, action) => {
@@ -17,10 +17,13 @@ const productReducer = (state, action) => {
 };
 
 const Product = () => {
-  const products = useSelector((state) => state.products);
+  const products = useSelector((state) => state?.products);
   const dispatch = useDispatch();
+
   const { id } = useParams();
+
   let product, listPrice, mrpPrice, transformedCategory;
+
   if (products.length > 0) {
     product = products.find((product) => +product.id === +id);
     listPrice = formatPrice(product?.list_price);
@@ -39,15 +42,17 @@ const Product = () => {
     defaultProductState
   );
 
-  const handleIncrease = () => {
+  const _handleIncrease = () => {
     if (productCount.count === 5) return;
     dispatchProductCount({ type: "INCREMENT" });
   };
-  const handleDecrease = () => {
+
+  const _handleDecrease = () => {
     if (productCount.count === 1) return;
     dispatchProductCount({ type: "DECREMENT" });
   };
-  const addToCartHandler = () => {
+
+  const _addToCartHandler = () => {
     dispatch(
       addItemToCart({
         id,
@@ -60,6 +65,7 @@ const Product = () => {
       })
     );
   };
+
   return (
     <div className="container flex flex-col md:flex-row justify-between items-center mt-12">
       <div className="md:w-2/5">
@@ -88,7 +94,7 @@ const Product = () => {
         <div className="flex items-center gap-4 mb-6 s:mb-8">
           <p className="text-dark-grey text-sm xs:text-base">Quantity:</p>
           <div className="flex items-center gap-2">
-            <button className="cart-action" onClick={handleDecrease}>
+            <button className="cart-action" onClick={_handleDecrease}>
               -
             </button>
             <input
@@ -97,12 +103,12 @@ const Product = () => {
               value={productCount.count}
               className="border text-center rounded-sm border-dark-grey w-16 text-sm xs:text-base"
             />
-            <button className="cart-action add" onClick={handleIncrease}>
+            <button className="cart-action add" onClick={_handleIncrease}>
               +
             </button>
           </div>
         </div>
-        <Button className="md:ml-0 primary-btn mb-4" onClick={addToCartHandler}>
+        <Button className="md:ml-0 primary-btn mb-4" onClick={_addToCartHandler}>
           Add to cart
         </Button>
       </div>

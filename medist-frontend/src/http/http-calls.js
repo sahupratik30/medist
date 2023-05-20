@@ -18,7 +18,7 @@ export const loginUser = (payload) => {
 // HTTP function to register the user
 export const registerUser = (payload) => {
   return new Promise((resolve, reject) => {
-    makePostRequest(`${BASE_URL}/signup/`, false, payload)
+    makePostRequest(`${BASE_URL}/register/`, false, payload)
       .then((res) => {
         resolve(res);
       })

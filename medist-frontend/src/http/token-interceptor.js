@@ -4,10 +4,10 @@ export const getToken = () => {
   return new Promise((resolve, reject) => {
     let token = null;
 
-    const { userCredential } = store.getState();
+    const { auth } = store.getState();
 
-    if (userCredential?.token) {
-      token = userCredential.token;
+    if (auth?.accessToken) {
+      token = auth.accessToken;
     }
 
     resolve(token);

@@ -1,32 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import {
-  getToken,
-  removeToken,
-  removeUserName,
-} from "../services/localStorageService";
-import Button from "../UI/Button";
-import { setAccessToken, unsetAccessToken } from "./../store/auth-slice";
+import Button from "./UI/Button";
+import { resetAuthData } from "../redux/slices/auth-slice";
 
 const MobileMenu = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const totalCartItems = useSelector((state) => state.cart.totalQuantity);
-  const { access_token } = getToken();
-  const accessToken = useSelector((state) => state.auth.access_token);
 
-  function handleClick() {
-    navigate("/signin");
-  }
-  function handleLogout() {
-    removeToken();
-    removeUserName();
-    dispatch(unsetAccessToken());
-  }
-  useEffect(() => {
-    dispatch(setAccessToken(access_token));
-  }, []);
+  const totalCartItems = useSelector((state) => state?.cart?.totalQuantity);
+  const { accessToken } = useSelector((state) => state?.auth || {});
+
+  const _handleLogout = () => {
+    dispatch(resetAuthData());
+  };
+
   const activeClassName = "text-primary";
   const mobileMenuClasses = `lg:hidden fixed top-0 z-10 right-0 bg-white shadow-lg flex flex-col gap-3 h-screen w-3/4 s:w-1/2 md:w-1/3 pl-6 transition duration-300 ${props.className}`;
 
@@ -46,6 +34,7 @@ const MobileMenu = (props) => {
               HOME
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/about"
@@ -71,6 +60,7 @@ const MobileMenu = (props) => {
               PRODUCTS
             </NavLink>
           </li>
+
           <li>
             <Link to="/cart" className="relative">
               <i className="fa-solid fa-cart-shopping fa-lg"></i>
@@ -79,13 +69,17 @@ const MobileMenu = (props) => {
               </small>
             </Link>
           </li>
+
           <li>
             {!accessToken ? (
-              <Button className="primary-btn" onClick={handleClick}>
+              <Button
+                className="primary-btn"
+                onClick={() => navigate("/signin")}
+              >
                 <i className="fa-solid fa-circle-user fa-lg"></i> Sign In
               </Button>
             ) : (
-              <Button className="primary-btn" onClick={handleLogout}>
+              <Button className="primary-btn" onClick={_handleLogout}>
                 Logout
               </Button>
             )}

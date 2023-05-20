@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import heroBg from "../assets/images/hero-bg.jpg";
 import heroImg from "../assets/images/hero-image.png";
-import Button from "../UI/Button";
+import Button from "./UI/Button";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  function handleClick() {
-    navigate("/products");
-  }
+
   return (
     <section
       className="bg-cover"
@@ -23,14 +21,17 @@ const HeroSection = () => {
             Get your <span className="text-primary">medicines</span> delivered
             to your doorstep.
           </h1>
+
           <p className="mt-4 mb-8 text-[#dcdcdc] md:w-[60ch] md:max-w-[80%] text-sm xs:text-base">
             Our platform is the one-stop solution for all your health needs as
             we aim to keep you healthy.
           </p>
-          <Button className="primary-btn" onClick={handleClick}>
+
+          <Button className="primary-btn" onClick={() => navigate("/products")}>
             Order Now
           </Button>
         </div>
+
         <div className="hidden lg:block w-1/3">
           <img
             src={heroImg}

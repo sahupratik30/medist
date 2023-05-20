@@ -1,10 +1,10 @@
 import React from "react";
-import Card from "../UI/Card";
-import Button from "../UI/Button";
+import Card from "./UI/Card";
+import Button from "./UI/Button";
 import { formatPrice } from "./../helpers";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addItemToCart } from "./../store/cart-slice";
+import { addItemToCart } from "../redux/slices/cart-slice";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -19,8 +19,10 @@ const ProductCard = (props) => {
     discount,
     image,
   } = props.product;
+
   const listPrice = formatPrice(list_price);
   const mrpPrice = formatPrice(mrp_price);
+
   const transformedCategory = category
     .toLowerCase()
     .split("_")
@@ -29,10 +31,7 @@ const ProductCard = (props) => {
     })
     .join(" ");
 
-  function handleClick() {
-    navigate(`/product/${id}`);
-  }
-  function addToCartHandler() {
+  const _addToCartHandler = () => {
     dispatch(
       addItemToCart({
         id,
@@ -44,7 +43,7 @@ const ProductCard = (props) => {
         image,
       })
     );
-  }
+  };
 
   return (
     <Card className="p-4 relative">
@@ -70,11 +69,14 @@ const ProductCard = (props) => {
       <div className="flex flex-col xs:flex-row items-center mt-6 gap-3">
         <Button
           className="primary-btn w-full xs:w-1/2"
-          onClick={addToCartHandler}
+          onClick={_addToCartHandler}
         >
           Add
         </Button>
-        <Button className="secondary-btn w-full xs:w-1/2" onClick={handleClick}>
+        <Button
+          className="secondary-btn w-full xs:w-1/2"
+          onClick={() => navigate(`/product/${id}`)}
+        >
           View
         </Button>
       </div>
