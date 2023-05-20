@@ -21,8 +21,8 @@ class UserModelAdmin(BaseUserAdmin):
     ]
     list_filter = ["is_admin"]
     fieldsets = [
-        (None, {"fields": ["username", "password"]}),
-        ("Personal info", {"fields": ["email", "tc"]}),
+        (None, {"fields": ["email", "password"]}),
+        ("Personal info", {"fields": ["username", "tc"]}),
         ("Permissions", {"fields": ["is_admin"]}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -37,8 +37,8 @@ class UserModelAdmin(BaseUserAdmin):
             },
         ),
     ]
-    search_fields = ["username", "id"]
-    ordering = ["id"]
+    search_fields = ["id"]
+    ordering = ["email", "id"]
     filter_horizontal = []
 
 
