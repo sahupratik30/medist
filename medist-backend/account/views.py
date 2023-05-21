@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from .models import User
 from .serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
@@ -13,6 +14,7 @@ from django.contrib.auth import authenticate
 from account.customerror import CustomRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from django.db import IntegrityError
 import json
 
 
@@ -36,20 +38,25 @@ class UserRegistration(APIView):
                 {"token": token, "msg": "Registered successfully"},
                 status=status.HTTP_201_CREATED,
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"msg": "False"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
+        data = {}
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")
             user = authenticate(email=email, password=password)
+            Data = User.objects.get(email=email)
             if user is not None:
                 token = get_tokens_for_user(user)
+                data["username"] = Data.username
+                data["email"] = Data.email
                 return Response(
                     {
+                        "data": data,
                         "error": "false",
                         "token": token,
                         "msg": "Login successful",
@@ -63,6 +70,12 @@ class UserLogin(APIView):
                 )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLogout(APIView):
+    def get(self, request, *args, **kwargs):
+        request.user.auth_token.delete()
+        return Response({"msg": "Logout"}, status=status.HTTP_200_OK)
 
 
 class UserProfile(APIView):

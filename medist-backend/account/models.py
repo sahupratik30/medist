@@ -36,11 +36,7 @@ class UserManager(BaseUserManager):
 
 #  Custom User Model
 class User(AbstractBaseUser):
-    email = models.EmailField(
-        verbose_name="Email",
-        max_length=200,
-        unique=True,
-    )
+    email = models.EmailField(verbose_name="Email", max_length=200, unique=True)
     username = models.CharField(max_length=200)
     tc = models.BooleanField()
     is_active = models.BooleanField(default=True)

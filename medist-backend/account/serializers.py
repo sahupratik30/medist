@@ -18,6 +18,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
         password = data["password"]
         password2 = data["password2"]
+        email = data["email"]
         if password != password2:
             raise serializers.ValidationError(
                 "Password and Confirm Password doesn't match"
