@@ -228,7 +228,7 @@ const SignupForm = () => {
           onBlur={() => _onBlurFormFields("password")}
         />
         <i
-          className={`text-dark-grey absolute top-1/2 right-3 -translate-y-1/2 fa-solid ${
+          className={`fa-solid absolute right-3 top-1/2 -translate-y-1/2 text-dark-grey ${
             showPassword ? "fa-eye" : "fa-eye-slash"
           } cursor-pointer`}
           onClick={_togglePasswordHandler}
@@ -250,7 +250,7 @@ const SignupForm = () => {
           onBlur={() => _onBlurFormFields("confirmPassword")}
         />
         <i
-          className={`text-dark-grey absolute top-1/2 right-3 -translate-y-1/2 fa-solid ${
+          className={`fa-solid absolute right-3 top-1/2 -translate-y-1/2 text-dark-grey ${
             showPassword ? "fa-eye" : "fa-eye-slash"
           } cursor-pointer`}
           onClick={_togglePasswordHandler}

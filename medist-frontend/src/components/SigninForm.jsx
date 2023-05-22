@@ -3,6 +3,9 @@ import Button from "./UI/Button";
 import { regexConfig } from "../config/regex-config";
 import { errorHandler, showToast } from "../helpers";
 import { loginUser } from "../http/http-calls";
+import { useDispatch } from "react-redux";
+import { setAccessToken, setUserData } from "../redux/slices/auth-slice";
+import { useNavigate } from "react-router-dom";
 
 const SigninForm = () => {
   const [formFields, setFormFields] = useState({
@@ -19,6 +22,9 @@ const SigninForm = () => {
   });
   const [showPassword, setshowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const _togglePasswordHandler = () => {
     setshowPassword((prevState) => !prevState);
@@ -116,9 +122,11 @@ const SigninForm = () => {
       };
 
       const res = await loginUser(payload);
-      console.log(res);
+      dispatch(setAccessToken(res?.token?.access));
+      dispatch(setUserData(res?.data));
       showToast("Logged in successfully", "success", 2000, "login");
       setLoading(false);
+      navigate("/");
     } catch (error) {
       errorHandler(error);
       setLoading(false);
@@ -156,7 +164,7 @@ const SigninForm = () => {
           onBlur={() => _onBlurFormFields("password")}
         />
         <i
-          className={`text-dark-grey absolute top-1/2 right-3 -translate-y-1/2 fa-solid ${
+          className={`fa-solid absolute right-3 top-1/2 -translate-y-1/2 text-dark-grey ${
             showPassword ? "fa-eye" : "fa-eye-slash"
           } cursor-pointer`}
           onClick={_togglePasswordHandler}

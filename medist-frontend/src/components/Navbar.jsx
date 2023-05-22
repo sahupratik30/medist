@@ -15,8 +15,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userName = user?.name;
-
   // function to toggle mobile menu
   const _toggleMobileMenu = () => {
     setShowMobileMenu(true);
@@ -30,8 +28,8 @@ const Navbar = () => {
   const activeClassName = "text-primary";
 
   return (
-    <header className="bg-white py-3 sticky top-0 z-20">
-      <div className="container flex justify-between items-center">
+    <header className="sticky top-0 z-20 bg-white py-3">
+      <div className="container flex items-center justify-between">
         <Link to="/">
           <img
             src={logo}
@@ -41,14 +39,14 @@ const Navbar = () => {
         </Link>
 
         <nav>
-          <ul className="hidden lg:flex items-center gap-5 text-sm xs:text-base">
+          <ul className="hidden items-center gap-5 text-sm xs:text-base lg:flex">
             <li>
               <NavLink
                 to="/"
                 className={({ isActive }) =>
                   isActive
                     ? activeClassName
-                    : "hover:text-primary transition duration-200"
+                    : "transition duration-200 hover:text-primary"
                 }
               >
                 HOME
@@ -61,7 +59,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   isActive
                     ? activeClassName
-                    : "hover:text-primary transition duration-200"
+                    : "transition duration-200 hover:text-primary"
                 }
               >
                 ABOUT
@@ -74,7 +72,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   isActive
                     ? activeClassName
-                    : "hover:text-primary transition duration-200"
+                    : "transition duration-200 hover:text-primary"
                 }
               >
                 PRODUCTS
@@ -84,16 +82,16 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-8">
-          {accessToken && (
-            <p className="text-primary font-medium text-sm xs:text-base">
-              Welcome, <span>{userName?.split(" ")[0]}</span>
+          {/* {accessToken && (
+            <p className="text-sm font-medium text-primary xs:text-base">
+              Welcome, <span>{user?.username?.split(" ")[0]}</span>
             </p>
-          )}
+          )} */}
 
-          <div className="hidden lg:flex gap-8 items-center">
+          <div className="hidden items-center gap-8 lg:flex">
             <Link to="/cart" className="relative">
               <i className="fa-solid fa-cart-shopping fa-lg" />
-              <small className="absolute bg-light-red aspect-square text-white -top-2 -right-2 rounded-lg flex justify-center items-center w-5 h-4">
+              <small className="absolute -right-2 -top-2 flex aspect-square h-4 w-5 items-center justify-center rounded-lg bg-light-red text-white">
                 {totalCartItems}
               </small>
             </Link>
@@ -114,7 +112,7 @@ const Navbar = () => {
         </div>
 
         <i
-          className="fa-solid fa-bars fa-lg text-primary lg:hidden block"
+          className="fa-solid fa-bars fa-lg block text-primary lg:hidden"
           onClick={_toggleMobileMenu}
         />
       </div>
