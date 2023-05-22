@@ -5,6 +5,7 @@ import logo from "../assets/images/logo.png";
 import Button from "./UI/Button";
 import MobileMenu from "./MobileMenu";
 import { resetAuthData } from "../redux/slices/auth-slice";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -104,9 +105,7 @@ const Navbar = () => {
                 <i className="fa-solid fa-circle-user fa-lg" /> Sign In
               </Button>
             ) : (
-              <Button className="primary-btn" onClick={_handleLogout}>
-                Logout
-              </Button>
+              <ProfileDropdown />
             )}
           </div>
         </div>
