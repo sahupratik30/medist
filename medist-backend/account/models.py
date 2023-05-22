@@ -35,9 +35,12 @@ class UserManager(BaseUserManager):
 
 
 #  Custom User Model
+# gender_choices = ("male", "male", "female", "other", "other")
 class User(AbstractBaseUser):
     email = models.EmailField(verbose_name="Email", max_length=200, unique=True)
     username = models.CharField(max_length=200)
+    # age = models.IntegerField()
+    # gender = models.CharField(max_length=20, choices=gender_choices)
     tc = models.BooleanField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
