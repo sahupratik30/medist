@@ -6,19 +6,22 @@ const ErrorPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="container mt-36 flex flex-col items-center gap-2 xs:gap-3 md:gap-4">
-      <h1 className="font-bold text-4xl xs:text-5xl md:text-6xl text-black">
-        404
-      </h1>
-
-      <h2 className="font-semibold text-xl xs:text-2xl md:text-3xl text-dark-grey">
-        Oops! Page not found.
-      </h2>
-
-      <Button className="primary-btn" onClick={() => navigate("/")}>
-        Go to Home
-      </Button>
-    </div>
+    <main className="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
+      <div className="text-center">
+        <p className="text-base font-semibold text-primary">404</p>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Page not found
+        </h1>
+        <p className="mt-6 text-base leading-7 text-gray-600">
+          Sorry, we couldn't find the page you're looking for.
+        </p>
+        <div className="mt-10 flex items-center justify-center">
+          <Button className="primary-btn" onClick={() => navigate("/")}>
+            Go back home
+          </Button>
+        </div>
+      </div>
+    </main>
   );
 };
 
