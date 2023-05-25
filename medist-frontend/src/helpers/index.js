@@ -23,10 +23,9 @@ export const formatPrice = (amount) => {
 };
 
 // function to filter products
-export const filterProducts = (products = [], filterConfig = {}) => {
-  const key = Object.keys(filterConfig)[0];
+export const filterProductsBySpeciality = (products = [], speciality) => {
   const filteredProducts = products.filter((product) => {
-    return product[key] === filterConfig[key];
+    return product.speciality === speciality;
   });
   return filteredProducts;
 };
