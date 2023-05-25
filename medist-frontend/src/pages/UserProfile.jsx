@@ -2,8 +2,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/UI/Button";
 import { isUserAuthenticated } from "../guards/auth-guard";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const UserProfile = () => {
+  const { user } = useSelector((state) => state?.auth || {});
+
   const navigate = useNavigate();
   const isAuthenticated = isUserAuthenticated();
 
@@ -36,6 +39,7 @@ const UserProfile = () => {
                   <input
                     type="text"
                     name="full-name"
+                    value={user?.username}
                     id="full-name"
                     autoComplete="given-name"
                     className="formInput"
@@ -55,8 +59,10 @@ const UserProfile = () => {
                     id="email"
                     name="email"
                     type="email"
+                    value={user?.email}
                     autoComplete="email"
                     className="formInput"
+                    disabled
                   />
                 </div>
               </div>

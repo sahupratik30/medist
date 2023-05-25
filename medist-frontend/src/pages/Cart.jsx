@@ -14,11 +14,17 @@ const Cart = () => {
       // <h1 className="text-center mt-10 text-xl xs:text-2xl md:text-3xl text-light-red">
       //   Your cart is empty!
       // </h1>
-      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col justify-center gap-6">
-        <img src={emptyCart} className="w-24 xs:w-32 sm:w-44 translate-x-5" alt="" />
-        <h2 className="text-sm w-max font-normal text-gray-300 xs:text-lg sm:text-2xl">
-          No items were added!
-        </h2>
+      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-6">
+        <div className="w-max rounded-full border-2 border-primary p-2 xs:p-4 sm:p-6">
+          <img
+            src={emptyCart}
+            className="w-12 xs:w-20 sm:w-28"
+            alt="empty cart"
+          />
+        </div>
+        <h1 className="w-max text-base font-semibold sm:tracking-wide uppercase text-gray-700 xs:text-lg sm:text-2xl">
+          Your cart is currently empty!
+        </h1>
       </div>
     );
 
