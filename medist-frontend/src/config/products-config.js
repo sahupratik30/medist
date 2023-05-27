@@ -1,4 +1,5 @@
 export const categoryOptions = [
+  { key: "All", value: "ALL" },
   { key: "Lung Care", value: "LUNG_CARE" },
   { key: "Liver Care", value: "LIVER_CARE" },
   { key: "Stomach Care", value: "STOMACH_CARE" },

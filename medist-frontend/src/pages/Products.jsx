@@ -1,16 +1,33 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Fragment } from "react";
+import { useEffect, useState } from "react";
 import { categoryOptions } from "../config/products-config";
 import { useSelector } from "react-redux";
 import AllProductsWrapper from "../components/AllProductsWrapper";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { filterProducts, searchProduct } from "../helpers";
 
 const Products = () => {
+  const [category, setCategory] = useState("ALL");
+  const [searchValue, setSearchValue] = useState("");
+  const [allProducts, setAllProducts] = useState([]);
+
   const products = useSelector((state) => state?.products);
+
+  // Effect to set the products when category changes
+  useEffect(() => {
+    category === "ALL"
+      ? setAllProducts(products)
+      : setAllProducts(filterProducts(products, { category }));
+  }, [category]);
+
+  // Effect to set all products when user searches a product
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setAllProducts(searchProduct(searchValue?.trim()));
+    }, 300);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [searchValue]);
 
   return (
     <div className="container py-4">
@@ -20,6 +37,8 @@ const Products = () => {
           <select
             id="category"
             name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             autoComplete="category"
             className="block w-full rounded-md border-0 bg-gray-100 px-2 py-2 text-sm text-gray-500 outline-none xs:text-base sm:text-sm sm:leading-6"
           >
@@ -55,6 +74,7 @@ const Products = () => {
               className="peer h-full w-full bg-gray-100 pr-2 text-sm text-gray-700 outline-none xs:text-base"
               type="text"
               id="search"
+              onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search a product..."
             />
           </div>
@@ -62,7 +82,7 @@ const Products = () => {
       </div>
 
       {/* Products Wrapper */}
-      <AllProductsWrapper products={products} />
+      <AllProductsWrapper products={allProducts} />
     </div>
   );
 };

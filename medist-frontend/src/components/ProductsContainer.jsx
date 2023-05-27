@@ -1,10 +1,10 @@
 import React from "react";
 import ProductCard from "./ProductCard";
-import { filterProductsBySpeciality } from "./../helpers";
+import { filterProducts } from "./../helpers";
 
 const ProductsContainer = (props) => {
   const { products, speciality } = props;
-  const filteredProducts = filterProductsBySpeciality(products, speciality);
+  const filteredProducts = filterProducts(products, { speciality });
 
   return (
     <section className="bg-[#f1f1f1] py-16">

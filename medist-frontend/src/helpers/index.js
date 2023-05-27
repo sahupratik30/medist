@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast";
+import { store } from "./../redux/store";
 
 // function to structure query parameters
 export const structureQueryParams = (params) => {
@@ -23,11 +24,24 @@ export const formatPrice = (amount) => {
 };
 
 // function to filter products
-export const filterProductsBySpeciality = (products = [], speciality) => {
+export const filterProducts = (products = [], filterConfig = {}) => {
+  const key = Object.keys(filterConfig)[0];
   const filteredProducts = products.filter((product) => {
-    return product.speciality === speciality;
+    return product[key] === filterConfig[key];
   });
   return filteredProducts;
+};
+
+// function to find searched products
+export const searchProduct = (searchValue = "") => {
+  const state = store.getState();
+  const products = state?.products;
+
+  const searchResult = products.filter((product) =>
+    product?.pname?.toLowerCase()?.includes(searchValue?.toLowerCase())
+  );
+
+  return searchResult;
 };
 
 // function to handle errors
