@@ -17,7 +17,7 @@ const UserProfile = () => {
   return (
     <div className="container my-8">
       <form className="mx-auto w-full sm:max-w-2xl">
-        <di1v className="space-y-12">
+        <div className="space-y-12">
           <h2 className="text-xl font-semibold leading-7 text-gray-900 xs:text-2xl">
             Edit Profile
           </h2>
@@ -40,6 +40,7 @@ const UserProfile = () => {
                     type="text"
                     name="full-name"
                     value={user?.username}
+                    onChange={(e) => {}}
                     id="full-name"
                     autoComplete="given-name"
                     className="formInput"
@@ -62,6 +63,7 @@ const UserProfile = () => {
                     value={user?.email}
                     autoComplete="email"
                     className="formInput"
+                    readOnly
                     disabled
                   />
                 </div>
@@ -159,7 +161,7 @@ const UserProfile = () => {
               </div>
             </div>
           </div>
-        </di1v>
+        </div>
 
         <div className="mt-6 flex items-center justify-center">
           <Button type="submit" className="primary-btn">

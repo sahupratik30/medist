@@ -12,6 +12,8 @@ import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
 import { Toaster } from "react-hot-toast";
 import UserProfile from "./pages/UserProfile";
+import Orders from "./pages/Orders";
+import OrderDetails from "./pages/OrderDetails";
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
           <Route path="/signin" element={<Signin />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/orders/:orderId" element={<OrderDetails />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>
