@@ -14,8 +14,10 @@ from django.contrib.auth import authenticate
 from account.customerror import CustomRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-from django.db import IntegrityError
+
+# from django.db import IntegrityError
 import json
+from rest_framework.authtoken.models import Token
 
 
 # Create your views here.
@@ -50,6 +52,7 @@ class UserLogin(APIView):
             password = serializer.data.get("password")
             user = authenticate(email=email, password=password)
             Data = User.objects.get(email=email)
+            print(type(user))
             if user is not None:
                 token = get_tokens_for_user(user)
                 data["username"] = Data.username
@@ -72,18 +75,67 @@ class UserLogin(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserLogout(APIView):
-    def get(self, request, *args, **kwargs):
-        request.user.auth_token.delete()
-        return Response({"msg": "Logout"}, status=status.HTTP_200_OK)
-
-
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         serializer = UserProfileSerializer(request.user)
+        print(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, id=None, format=None):
+        data = {}
+        id = id
+        user = User.objects.get(id=id)
+        print("user", user)
+        serializer = UserProfileSerializer(user, request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            data["id"] = user.id
+            data["username"] = user.username
+            data["email"] = user.email
+            data["Country"] = user.Country
+            data["street_address"] = user.street_address
+            data["City"] = user.City
+            data["state"] = user.postalcode
+            print(data)
+            return Response(
+                {"msg": "complete data updated"},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, id=None, format=None):
+        id = id
+        data = {}
+        user = User.objects.get(id=id)
+        print("user", user)
+        serializer = UserProfileSerializer(user, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            data["id"] = user.id
+            data["username"] = user.username
+            data["email"] = user.email
+            data["Country"] = user.Countrydata["id"] = user.id
+            data["username"] = user.username
+            data["email"] = user.email
+            data["Country"] = user.Country
+            data["street_address"] = user.street_address
+            data["City"] = user.City
+            data["state"] = user.postalcode
+            data["street_address"] = user.street_address
+            data["City"] = user.City
+            data["state"] = user.postalcode
+            return Response(
+                {"msg": "Partial data updated"},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id=None, format=None):
+        id = id
+        user = User.objects.get(id=id).delete()
+        return Response({"msg": "data deleted "}, status=status.HTTP_204_NO_CONTENT)
 
 
 class UserChangePassword(APIView):
