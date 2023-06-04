@@ -113,6 +113,7 @@ class UserProfile(APIView):
         serializer = UserProfileSerializer(user, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            '''
             data["id"] = user.id
             data["username"] = user.username
             data["email"] = user.email
@@ -126,6 +127,7 @@ class UserProfile(APIView):
             data["street_address"] = user.street_address
             data["City"] = user.City
             data["state"] = user.postalcode
+            '''
             return Response(
                 {"msg": "Partial data updated"},
                 status=status.HTTP_201_CREATED,
