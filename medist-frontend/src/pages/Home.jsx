@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   ProductsContainer,
@@ -8,9 +8,15 @@ import {
   ChooseUsSection,
   Footer,
 } from "../components";
+import { fetchProducts } from "../redux/slices/products-slice";
 
 const Home = () => {
   const products = useSelector((state) => state?.products);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
 
   return (
     <>

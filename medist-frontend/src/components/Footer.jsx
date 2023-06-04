@@ -4,126 +4,93 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="sm:min-h-[400px] py-8 sm:py-16 bg-black">
-      <div className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        <div className="flex flex-col gap-8 col-span-2 md:col-span-3 lg:col-span-2">
+    <footer className="bg-black py-8 sm:min-h-[400px] sm:py-16">
+      <div className="container grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
+        <div className="col-span-2 flex flex-col gap-8 md:col-span-3 lg:col-span-2">
           <img
             src={logoAlt}
             className="w-24 xs:w-28 md:w-32"
             alt="medist text written in light grey color"
           />
 
-          <p className="text-white text-sm xs:text-base s:text-justify max-w-sm">
+          <p className="max-w-sm text-sm text-white xs:text-base s:text-justify">
             Medist is a one-stop solution for all your healthcare needs where
             you get delivery of all kinds of medicines across the country.
           </p>
 
           <div className="flex items-center gap-4">
             <a href="#">
-              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-facebook-f" />
+              <i className="fa-lg fa-brands fa-facebook-f flex aspect-square w-12 items-center justify-center rounded-full bg-primary text-white" />
             </a>
 
             <a href="#">
-              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-instagram" />
+              <i className="fa-lg fa-brands fa-instagram flex aspect-square w-12 items-center justify-center rounded-full bg-primary text-white" />
             </a>
 
             <a href="#">
-              <i className="fa-lg text-white bg-primary aspect-square w-12 flex items-center justify-center rounded-full fa-brands fa-twitter" />
+              <i className="fa-lg fa-brands fa-twitter flex aspect-square w-12 items-center justify-center rounded-full bg-primary text-white" />
             </a>
           </div>
         </div>
 
         <div className="col-span-2 md:col-span-1">
-          <h2 className="text-lg w-max xs:text-xl md:text-2xl font-semibold text-dark-grey">
+          <h2 className="w-max text-lg font-semibold text-primary xs:text-xl md:text-2xl">
             Links
           </h2>
 
-          <hr className="w-12" />
-
-          <ul className="mt-4 flex flex-col gap-2 text-white text-sm xs:text-base">
-            <li>
-              <Link to="/">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Home
-              </Link>
+          <ul className="mt-4 flex flex-col gap-2 text-sm text-white xs:text-base">
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/">Home</Link>
             </li>
 
-            <li>
-              <Link to="/about">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                About
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/about">About</Link>
             </li>
 
-            <li>
-              <Link to="/products">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Products
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products">Products</Link>
             </li>
           </ul>
         </div>
 
         <div className="col-span-2 md:col-span-1">
-          <h2 className="text-lg w-max xs:text-xl md:text-2xl font-semibold text-dark-grey">
+          <h2 className="w-max text-lg font-semibold text-primary xs:text-xl md:text-2xl">
             All Categories
           </h2>
 
-          <hr className="w-12" />
-
-          <ul className="mt-4 flex flex-col gap-2 text-white text-sm xs:text-base">
-            <li>
-              <Link to="/products/lung-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Lung Care
-              </Link>
+          <ul className="mt-4 flex flex-col gap-2 text-sm text-white xs:text-base">
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=LUNG_CARE">Lung Care</Link>
             </li>
 
-            <li>
-              <Link to="/products/liver-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Liver Care
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=LIVER_CARE">Liver Care</Link>
             </li>
 
-            <li>
-              <Link to="/products/stomach-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Stomach Care
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=STOMACH_CARE">Stomach Care</Link>
             </li>
 
-            <li>
-              <Link to="/products/heart-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Heart Care
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=HEART_CARE">Heart Care</Link>
             </li>
 
-            <li>
-              <Link to="/products/cold-and-fever">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=COLD_AND_FEVER">
                 Cold And Fever
               </Link>
             </li>
 
-            <li>
-              <Link to="/products/diabetes-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Diabetes Care
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=DIABETES_CARE">Diabetes Care</Link>
             </li>
 
-            <li>
-              <Link to="/products/eye-care">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
-                Eye Care
-              </Link>
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=EYE_CARE">Eye Care</Link>
             </li>
 
-            <li>
-              <Link to="/products/bone-and-joint-pain">
-                <i className="text-primary fa-solid fa-angle-right mr-2" />
+            <li className="transition hover:text-[#5c945b]">
+              <Link to="/products?category=BONE_AND_JOINT_PAIN">
                 Bone and Joint Pain
               </Link>
             </li>
@@ -131,21 +98,19 @@ const Footer = () => {
         </div>
 
         <div className="col-span-2 md:col-span-1">
-          <h2 className="text-lg w-max xs:text-xl md:text-2xl font-semibold text-dark-grey">
+          <h2 className="w-max text-lg font-semibold text-primary xs:text-xl md:text-2xl">
             Get In Touch
           </h2>
 
-          <hr className="w-12" />
-
-          <p className="text-sm xs:text-base text-white mt-4">
+          <p className="mt-4 text-sm text-white xs:text-base">
             Plot No. - 16/18, Near Infocity Square, Bhubaneswar, Patia - 751024
           </p>
 
-          <p className="text-sm xs:text-base text-white mt-8">
+          <p className="mt-8 text-sm text-white xs:text-base">
             E-mail : contact@medist.com
           </p>
 
-          <p className="text-sm xs:text-base text-white mt-2">
+          <p className="mt-2 text-sm text-white xs:text-base">
             Ph : +917608998089
           </p>
         </div>

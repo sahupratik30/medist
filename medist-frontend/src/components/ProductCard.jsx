@@ -1,10 +1,11 @@
 import React from "react";
 import Card from "./UI/Card";
 import Button from "./UI/Button";
-import { formatPrice } from "./../helpers";
+import { formatPrice, showToast } from "./../helpers";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "../redux/slices/cart-slice";
+import Swal from "sweetalert2";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -43,30 +44,42 @@ const ProductCard = (props) => {
         image,
       })
     );
+    Swal.fire({
+      icon: "success",
+      text: "Item added successfully!",
+      confirmButtonColor: "#04c300",
+    });
   };
 
   return (
-    <Card className="p-4 relative">
-      <small className="absolute top-3 left-3 text-[10px] bg-light-red text-white px-3 rounded-sm py-0.5">
+    <Card className="relative p-4">
+      <small className="absolute left-3 top-3 rounded-sm bg-light-red px-3 py-0.5 text-[10px] text-white">
         <span>{discount}</span>% off
       </small>
-      <img src={image} alt="" className="w-40 mx-auto my-3" />
-      <p className="text-sm xs:text-base line-clamp-1" title={pname}>
+      <img
+        src={image}
+        alt=""
+        className="mx-auto my-3 h-40 w-40 object-contain"
+      />
+      <p className="line-clamp-1 text-sm xs:text-base" title={pname}>
         {pname}
       </p>
-      <p className="text-[12px] my-3 text-dark-grey font-light italic">
+      <p
+        className="my-3 line-clamp-1 text-[12px] font-light italic text-dark-grey"
+        title={manufacturer}
+      >
         {manufacturer}
       </p>
-      <p className="text-[10px] text-primary bg-secondary border border-primary w-max py-1 rounded-full px-3 mb-5">
+      <p className="mb-5 w-max rounded-full border border-primary bg-secondary px-3 py-1 text-[10px] text-primary">
         {transformedCategory}
       </p>
-      <p className="text-sm xs:text-base text-dark-grey font-medium">
+      <p className="text-sm font-medium text-dark-grey xs:text-base">
         Our Price* <span className="text-light-red">{listPrice}</span>
       </p>
-      <p className="text-[12px] xs:text-sm text-dark-grey mt-1">
+      <p className="mt-1 text-[12px] text-dark-grey xs:text-sm">
         MRP <span className="line-through">{mrpPrice}</span>
       </p>
-      <div className="flex flex-col xs:flex-row items-center mt-6 gap-3">
+      <div className="mt-6 flex flex-col items-center gap-3 xs:flex-row">
         <Button
           className="primary-btn w-full xs:w-1/2"
           onClick={_addToCartHandler}

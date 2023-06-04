@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./UI/Button";
 import { resetAuthData } from "../redux/slices/auth-slice";
+import ProfileDropdown from "./ProfileDropdown";
 
 const MobileMenu = (props) => {
   const navigate = useNavigate();
@@ -21,14 +22,14 @@ const MobileMenu = (props) => {
   return (
     <div className={mobileMenuClasses}>
       <nav className="relative">
-        <ul className="flex flex-col gap-6 mt-10 text-sm xs:text-base">
+        <ul className="mt-10 flex flex-col gap-6 text-sm xs:text-base">
           <li>
             <NavLink
               to="/"
               className={({ isActive }) =>
                 isActive
                   ? activeClassName
-                  : "hover:text-primary transition duration-200"
+                  : "transition duration-200 hover:text-primary"
               }
             >
               HOME
@@ -41,7 +42,7 @@ const MobileMenu = (props) => {
               className={({ isActive }) =>
                 isActive
                   ? activeClassName
-                  : "hover:text-primary transition duration-200"
+                  : "transition duration-200 hover:text-primary"
               }
             >
               ABOUT
@@ -54,7 +55,7 @@ const MobileMenu = (props) => {
               className={({ isActive }) =>
                 isActive
                   ? activeClassName
-                  : "hover:text-primary transition duration-200"
+                  : "transition duration-200 hover:text-primary"
               }
             >
               PRODUCTS
@@ -64,7 +65,7 @@ const MobileMenu = (props) => {
           <li>
             <Link to="/cart" className="relative">
               <i className="fa-solid fa-cart-shopping fa-lg" />
-              <small className="absolute bg-light-red aspect-square text-white -top-2 -right-2 rounded-lg flex justify-center items-center w-5 h-4">
+              <small className="absolute -right-2 -top-2 flex aspect-square h-4 w-5 items-center justify-center rounded-lg bg-light-red text-white">
                 {totalCartItems}
               </small>
             </Link>
@@ -79,14 +80,12 @@ const MobileMenu = (props) => {
                 <i className="fa-solid fa-circle-user fa-lg" /> Sign In
               </Button>
             ) : (
-              <Button className="primary-btn" onClick={_handleLogout}>
-                Logout
-              </Button>
+              <ProfileDropdown />
             )}
           </li>
         </ul>
         <i
-          className="fa-solid fa-xmark fa-lg absolute top-6 right-5"
+          className="fa-solid fa-xmark fa-lg absolute right-5 top-6"
           onClick={props.onClose}
         />
       </nav>

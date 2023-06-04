@@ -4,6 +4,7 @@ import Button from "../components/UI/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { formatPrice } from "../helpers";
 import { addItemToCart } from "../redux/slices/cart-slice";
+import Swal from "sweetalert2";
 
 const defaultProductState = { count: 1 };
 const productReducer = (state, action) => {
@@ -64,35 +65,40 @@ const Product = () => {
         image: product?.image,
       })
     );
+    Swal.fire({
+      icon: "success",
+      text: "Item added successfully!",
+      confirmButtonColor: "#04c300",
+    });
   };
 
   return (
-    <div className="container flex flex-col md:flex-row justify-between items-center mt-12">
+    <div className="container mt-12 flex flex-col items-center justify-between md:flex-row">
       <div className="md:w-2/5">
         <img src={product?.image} alt="" className="" />
       </div>
       <div className="flex flex-col md:w-1/2">
-        <p className="text-base xs:text-xl s:text[22px] mb-3 s:mb-4">
+        <p className="s:text[22px] mb-3 text-base xs:text-xl s:mb-4">
           {product?.pname}
         </p>
-        <p className="text-dark-grey bg-light-grey rounded-md w-max px-2 py-1 text-[10px] mb-6 s:mb-8">
+        <p className="mb-6 w-max rounded-md bg-light-grey px-2 py-1 text-[10px] text-dark-grey s:mb-8">
           {transformedCategory}
         </p>
-        <p className="text-justify text-dark-grey text-[12px] italic xs:text-sm mb-3 s:mb-4">
+        <p className="mb-3 text-justify text-[12px] italic text-dark-grey xs:text-sm s:mb-4">
           <span className="font-semibold">Description:</span>
           {product?.description}
         </p>
-        <p className="text-sm xs:text-base text-dark-grey font-medium">
+        <p className="text-sm font-medium text-dark-grey xs:text-base">
           Our Price* <span className="text-light-red">{listPrice}</span>
         </p>
-        <p className="text-[12px] xs:text-sm text-dark-grey mt-1 mb-3 s:mb-4">
+        <p className="mb-3 mt-1 text-[12px] text-dark-grey xs:text-sm s:mb-4">
           MRP <span className="line-through">{mrpPrice}</span>
-          <span className="text-[10px] xs:text-[12px] text-primary ml-2">
+          <span className="ml-2 text-[10px] text-primary xs:text-[12px]">
             GET {product?.discount}% OFF
           </span>
         </p>
-        <div className="flex items-center gap-4 mb-6 s:mb-8">
-          <p className="text-dark-grey text-sm xs:text-base">Quantity:</p>
+        <div className="mb-6 flex items-center gap-4 s:mb-8">
+          <p className="text-sm text-dark-grey xs:text-base">Quantity:</p>
           <div className="flex items-center gap-2">
             <button className="cart-action" onClick={_handleDecrease}>
               -
@@ -101,14 +107,17 @@ const Product = () => {
               type="text"
               readOnly
               value={productCount.count}
-              className="border text-center rounded-sm border-dark-grey w-16 text-sm xs:text-base"
+              className="w-16 rounded-sm border border-dark-grey text-center text-sm xs:text-base"
             />
             <button className="cart-action add" onClick={_handleIncrease}>
               +
             </button>
           </div>
         </div>
-        <Button className="md:ml-0 primary-btn mb-4" onClick={_addToCartHandler}>
+        <Button
+          className="primary-btn mb-4 md:ml-0"
+          onClick={_addToCartHandler}
+        >
           Add to cart
         </Button>
       </div>
