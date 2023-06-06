@@ -10,6 +10,7 @@ from .serializers import (
     SendPasswordResetEmailSerializer,
     UserPasswordResetSerializer,
 )
+from django.core import serializers
 from django.contrib.auth import authenticate
 from account.customerror import CustomRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -52,6 +53,7 @@ class UserLogin(APIView):
             password = serializer.data.get("password")
             user = authenticate(email=email, password=password)
             Data = User.objects.get(email=email)
+            print(Data)
             print(type(user))
             if user is not None:
                 token = get_tokens_for_user(user)
@@ -83,7 +85,7 @@ class UserProfile(APIView):
         print(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, id=None, format=None):
+    def put(self, request, id=None, *args, **kwargs):
         data = {}
         id = id
         user = User.objects.get(id=id)
@@ -91,16 +93,19 @@ class UserProfile(APIView):
         serializer = UserProfileSerializer(user, request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            data["id"] = user.id
-            data["username"] = user.username
-            data["email"] = user.email
-            data["Country"] = user.Country
-            data["street_address"] = user.street_address
-            data["City"] = user.City
-            data["state"] = user.postalcode
-            print(data)
+            """
+            data["id"] = request.data.get("id")
+            data["username"] = request.data.get("username")
+            data["email"] = request.data.get("email")
+            data["Country"] = request.data.get("Country")
+            data["street_address"] = request.data.get("street_address")
+            data["City"] = request.data.get("City")
+            data["state"] = request.data.get("state")
+            data["postalcode"] = request.data.get("postalcode")
+            """
+            print(request.data)
             return Response(
-                {"msg": "complete data updated"},
+                serializer.data,
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -113,23 +118,8 @@ class UserProfile(APIView):
         serializer = UserProfileSerializer(user, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            '''
-            data["id"] = user.id
-            data["username"] = user.username
-            data["email"] = user.email
-            data["Country"] = user.Countrydata["id"] = user.id
-            data["username"] = user.username
-            data["email"] = user.email
-            data["Country"] = user.Country
-            data["street_address"] = user.street_address
-            data["City"] = user.City
-            data["state"] = user.postalcode
-            data["street_address"] = user.street_address
-            data["City"] = user.City
-            data["state"] = user.postalcode
-            '''
             return Response(
-                {"msg": "Partial data updated"},
+                serializer.data,
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
