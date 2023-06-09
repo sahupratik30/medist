@@ -14,15 +14,31 @@ class UserModelAdmin(BaseUserAdmin):
         "id",
         "username",
         "email",
-        "tc",
         "is_admin",
         "created_at",
         "updated_at",
+        "Country",
+        "street_address",
+        "City",
+        "state",
+        "postalcode",
     ]
     list_filter = ["is_admin"]
     fieldsets = [
         (None, {"fields": ["email", "password"]}),
-        ("Personal info", {"fields": ["username", "tc"]}),
+        (
+            "Personal info",
+            {
+                "fields": [
+                    "username",
+                    "Country",
+                    "street_address",
+                    "City",
+                    "state",
+                    "postalcode",
+                ]
+            },
+        ),
         ("Permissions", {"fields": ["is_admin"]}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -33,7 +49,7 @@ class UserModelAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ["wide"],
-                "fields": ["username", "email", "tc", "password1", "password2"],
+                "fields": ["username", "email", "password1", "password2"],
             },
         ),
     ]
