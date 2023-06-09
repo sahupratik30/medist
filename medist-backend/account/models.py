@@ -4,7 +4,18 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 #  Custom User Manager
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, tc, password=None, password2=None):
+    def create_user(
+        self,
+        email,
+        username,
+        Country=None,
+        street_address=None,
+        City=None,
+        state=None,
+        postalcode=None,
+        password=None,
+        password2=None,
+    ):
         # Creates and saves a User with the given email, username, tc and password.
         if not email:
             raise ValueError("User must have an email address")
@@ -12,14 +23,28 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
             username=username,
-            tc=tc,
+            Country=Country,
+            street_address=street_address,
+            City=City,
+            state=state,
+            postalcode=postalcode,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, tc, password=None):
+    def create_superuser(
+        self,
+        email,
+        username,
+        Country,
+        street_address,
+        City,
+        state,
+        postalcode,
+        password=None,
+    ):
         """
         Creates and saves a superuser with the given email, username, tc and password.
         """
@@ -27,7 +52,11 @@ class UserManager(BaseUserManager):
             email,
             password=password,
             username=username,
-            tc=tc,
+            Country=Country,
+            street_address=street_address,
+            City=City,
+            state=state,
+            postalcode=postalcode,
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -41,16 +70,22 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=200)
     # age = models.IntegerField()
     # gender = models.CharField(max_length=20, choices=gender_choices)
-    tc = models.BooleanField()
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    Country = models.CharField(max_length=50, null=True)
+    street_address = models.CharField(max_length=100, null=True)
+    City = models.CharField(max_length=50, null=True)
+    state = models.CharField(max_length=50, null=True, blank=True)
+    postalcode = models.IntegerField(null=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "tc"]
+    REQUIRED_FIELDS = [
+        "username",
+    ]
 
     def __str__(self):
         return self.email

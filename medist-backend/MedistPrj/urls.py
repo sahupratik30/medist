@@ -23,12 +23,11 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 router = DefaultRouter()
 router.register("products", product.ProductDetailsView, basename="products")
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("account.urls")),
     path("", include(router.urls)),
 ]
-
-
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
