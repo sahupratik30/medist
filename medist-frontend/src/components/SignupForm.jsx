@@ -166,7 +166,6 @@ const SignupForm = () => {
         email: newFormFields["email"],
         password: newFormFields["password"],
         password2: newFormFields["confirmPassword"],
-        tc: "True",
       };
 
       const res = await registerUser(payload);

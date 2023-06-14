@@ -6,11 +6,13 @@ import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import hardSet from "redux-persist/es/stateReconciler/hardSet";
 import persistStore from "redux-persist/es/persistStore";
+import { pharmacyReducer } from "./slices/pharmacies-slice";
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
   auth: authReducer,
+  pharmacies: pharmacyReducer,
 });
 
 const persistConfig = {

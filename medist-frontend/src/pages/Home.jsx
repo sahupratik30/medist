@@ -9,17 +9,15 @@ import {
   Footer,
 } from "../components";
 import { fetchProducts } from "../redux/slices/products-slice";
-import useSearchNearbyPlaces from "../hooks/useSearchNearbyPlaces";
 
 const Home = () => {
   const products = useSelector((state) => state?.products);
   const dispatch = useDispatch();
 
-  const result = useSearchNearbyPlaces(1000, "pharmacy");
-  console.log("PLACES>>>>>", result);
-
   useEffect(() => {
-    dispatch(fetchProducts());
+    if (!products) {
+      dispatch(fetchProducts());
+    }
   }, []);
 
   return (
