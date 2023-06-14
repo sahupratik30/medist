@@ -16,12 +16,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "username",
             "password",
             "password2",
-            "tc",
             "Country",
             "street_address",
             "City",
             "state",
             "postalcode",
+            "phoneNumber",
         ]
         extra_kwargs = {"password": {"write_only": True}}
 
@@ -60,6 +60,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "City",
             "state",
             "postalcode",
+            "phoneNumber",
         ]
 
 

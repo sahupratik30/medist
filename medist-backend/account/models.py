@@ -13,6 +13,7 @@ class UserManager(BaseUserManager):
         City=None,
         state=None,
         postalcode=None,
+        phoneNumber=None,
         password=None,
         password2=None,
     ):
@@ -28,6 +29,7 @@ class UserManager(BaseUserManager):
             City=City,
             state=state,
             postalcode=postalcode,
+            phoneNumber=phoneNumber,
         )
 
         user.set_password(password)
@@ -43,6 +45,7 @@ class UserManager(BaseUserManager):
         City,
         state,
         postalcode,
+        phoneNumber,
         password=None,
     ):
         """
@@ -57,6 +60,7 @@ class UserManager(BaseUserManager):
             City=City,
             state=state,
             postalcode=postalcode,
+            phoneNumber=phoneNumber,
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -79,6 +83,7 @@ class User(AbstractBaseUser):
     City = models.CharField(max_length=50, null=True)
     state = models.CharField(max_length=50, null=True, blank=True)
     postalcode = models.IntegerField(null=True)
+    phoneNumber = models.IntegerField(null=True)
 
     objects = UserManager()
 
