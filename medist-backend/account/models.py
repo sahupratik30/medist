@@ -81,7 +81,7 @@ class User(AbstractBaseUser):
     Country = models.CharField(max_length=50, null=True)
     street_address = models.CharField(max_length=100, null=True)
     City = models.CharField(max_length=50, null=True)
-    state = models.CharField(max_length=50, null=True, blank=True)
+    state = models.CharField(max_length=50, null=True)
     postalcode = models.IntegerField(null=True)
     phoneNumber = models.IntegerField(null=True)
 

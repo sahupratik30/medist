@@ -1,5 +1,9 @@
 import { BASE_URL } from "./../config/index";
-import { makeGetRequest, makePostRequest } from "./http-sevice";
+import {
+  makeGetRequest,
+  makePatchRequest,
+  makePostRequest,
+} from "./http-sevice";
 
 // HTTP function to login the user
 export const loginUser = (payload) => {
@@ -33,6 +37,20 @@ export const registerUser = (payload) => {
 export const fetchAllProducts = () => {
   return new Promise((resolve, reject) => {
     makeGetRequest(`${BASE_URL}/products/`, false)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log("API call error>>", e);
+        reject(e);
+      });
+  });
+};
+
+// HTTP function to update user profile
+export const updateUserProfile = (userId, payload) => {
+  return new Promise((resolve, reject) => {
+    makePatchRequest(`${BASE_URL}/profile/${userId}`, true, payload)
       .then((res) => {
         resolve(res);
       })

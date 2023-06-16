@@ -46,7 +46,6 @@ export const searchProduct = (searchValue = "") => {
 
 // function to handle errors
 export const errorHandler = (error) => {
-  console.log("error>>", error);
   showToast(
     error?.reason?.length || error?.msg?.length
       ? error?.reason || error?.msg
