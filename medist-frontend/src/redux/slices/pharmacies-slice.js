@@ -7,7 +7,7 @@ const PharmacySlice = createSlice({
   initialState,
   reducers: {
     setPharmacies(state, action) {
-      state = action.payload;
+      return action.payload;
     },
 
     resetPharmacies(state) {

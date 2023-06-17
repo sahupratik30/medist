@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import UserProfile from "./pages/UserProfile";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
+import Payment from "./pages/Payment";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/checkout" element={<Checkout />} />
