@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { isUserAuthenticated } from "../guards/auth-guard";
 
 const useSearchNearbyPlaces = (radius = 500, ...type) => {
   const [location, setLocation] = useState({});
   const [placeResults, setPlaceResults] = useState([]);
 
-  console.log(...type);
+  const pharmacies = useSelector((state) => state?.pharmacies);
+  const isAuthenticated = isUserAuthenticated();
 
   // Get user's location
   useEffect(() => {
@@ -23,7 +26,7 @@ const useSearchNearbyPlaces = (radius = 500, ...type) => {
   }, []);
 
   useEffect(() => {
-    const getNearbyPharmacies = (location) => {
+    const getNearbyPlaces = (location) => {
       // Create a new PlacesService object
       const service = new window.google.maps.places.PlacesService(
         document.createElement("div")
@@ -55,8 +58,8 @@ const useSearchNearbyPlaces = (radius = 500, ...type) => {
       location.longitude
     );
 
-    // Call the getNearbyPharmacies function with the location
-    getNearbyPharmacies(latLngObj);
+    // Call the getNearbyPlaces function with the location
+    if (!pharmacies?.length && isAuthenticated) getNearbyPlaces(latLngObj);
   }, [location]);
   return { places: placeResults };
 };

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import userIcon from "../assets/images/user-icon.svg";
 import { resetAuthData } from "../redux/slices/auth-slice";
+import { resetPharmacies } from "../redux/slices/pharmacies-slice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -19,6 +20,7 @@ const ProfileDropdown = () => {
   // function to logout user
   const _onLogout = () => {
     dispatch(resetAuthData());
+    dispatch(resetPharmacies());
     navigate("/");
   };
 

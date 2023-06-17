@@ -23,6 +23,20 @@ export const formatPrice = (amount) => {
   return formattedAmount;
 };
 
+// function to format place results
+export const formatPlaceResults = (places = []) => {
+  const results = places
+    ?.filter((place) => place?.opening_hours)
+    .map((place) => {
+      return {
+        name: place?.name,
+        address: place?.vicinity,
+        isOpen: place?.opening_hours?.open_now,
+      };
+    });
+  return results;
+};
+
 // function to filter products
 export const filterProducts = (products = [], filterConfig = {}) => {
   const key = Object.keys(filterConfig)[0];

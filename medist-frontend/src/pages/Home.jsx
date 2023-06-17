@@ -9,16 +9,31 @@ import {
   Footer,
 } from "../components";
 import { fetchProducts } from "../redux/slices/products-slice";
+import useSearchNearbyPlaces from "../hooks/useSearchNearbyPlaces";
+import { formatPlaceResults } from "../helpers";
+import { setPharmacies } from "../redux/slices/pharmacies-slice";
 
 const Home = () => {
   const products = useSelector((state) => state?.products);
+  const cart = useSelector((state) => state?.cart);
   const dispatch = useDispatch();
 
+  // fetch nearby pharmacies
+  const { places: pharmacies } = useSearchNearbyPlaces(500, ["pharmacy"]);
+
   useEffect(() => {
-    if (!products) {
+    if (!products?.length) {
       dispatch(fetchProducts());
     }
   }, []);
+
+  useEffect(() => {
+    if (pharmacies?.length) {
+      const nearbyPharmacies = formatPlaceResults(pharmacies);
+      console.log("Pharmacies>>", nearbyPharmacies);
+      dispatch(setPharmacies(nearbyPharmacies));
+    }
+  }, [pharmacies]);
 
   return (
     <>
