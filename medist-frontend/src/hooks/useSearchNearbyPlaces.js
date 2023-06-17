@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { GOOGLE_API_BASE_URL, GOOGLE_API_KEY } from "../config";
 
 const useSearchNearbyPlaces = (radius = 500, ...type) => {
   const [location, setLocation] = useState({});
