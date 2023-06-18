@@ -7,7 +7,6 @@ import emptyCart from "../assets/images/empty-cart.svg";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state?.cart?.items);
-  console.log(cartItems);
 
   if (cartItems.length === 0)
     return (

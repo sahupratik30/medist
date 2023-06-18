@@ -5,4 +5,5 @@ export const regexConfig = {
   name: /^[a-zA-Z'][a-zA-Z' ]{1,23}[a-zA-Z']?$/,
   password:
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+  postalCode: /^[1-9][0-9]{5}$/,
 };
