@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from ProductApp.serializers import PaymentCartSerializer
 from account.models import User
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -49,6 +50,8 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    carts = PaymentCartSerializer(many=True)
+
     class Meta:
         model = User
         fields = [
@@ -61,7 +64,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "state",
             "postalcode",
             "phoneNumber",
+            "carts",
         ]
+
+    def get_cart(self, obj):
+        return obj.carts.user.email
 
 
 class UserChangePasswordSerializer(serializers.ModelSerializer):

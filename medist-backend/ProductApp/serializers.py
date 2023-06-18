@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ProductDetails
+from .models import ProductDetails, AddtoCart, PaymentCart
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -17,3 +17,33 @@ class ProductSerializer(serializers.ModelSerializer):
             "speciality",
             "image",
         ]
+
+
+class AddtoCartSerialier(serializers.ModelSerializer):
+    image = serializers.URLField()
+
+    class Meta:
+        model = AddtoCart
+        fields = [
+            "id",
+            "carts",
+            "users",
+            "name",
+            "manufacturer",
+            "quantity",
+            "price",
+            "mrp",
+            "totalPrice",
+            "image",
+        ]
+
+    def get_cart(self, obj):
+        return obj.carts.user.email
+
+
+class PaymentCartSerializer(serializers.ModelSerializer):
+    items = AddtoCartSerialier(many=True)
+
+    class Meta:
+        model = PaymentCart
+        fields = ["items", "totalQuantity", "totalAmount"]

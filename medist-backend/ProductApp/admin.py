@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ProductApp.models import ProductDetails
+from ProductApp.models import ProductDetails, AddtoCart, PaymentCart
 
 # Register your models here.
 
@@ -19,4 +19,25 @@ class ProductAdmin(admin.ModelAdmin):
     ]
 
 
+class addtocartAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "carts",
+        "users",
+        "name",
+        "manufacturer",
+        "quantity",
+        "price",
+        "mrp",
+        "totalPrice",
+        "image",
+    ]
+
+
+class paymentcartAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "totalQuantity", "totalAmount"]
+
+
+admin.site.register(PaymentCart, paymentcartAdmin)
+admin.site.register(AddtoCart, addtocartAdmin)
 admin.site.register(ProductDetails, ProductAdmin)
