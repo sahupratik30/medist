@@ -57,8 +57,15 @@ class UserLogin(APIView):
             print(type(user))
             if user is not None:
                 token = get_tokens_for_user(user)
+                data["id"] = Data.id
                 data["username"] = Data.username
                 data["email"] = Data.email
+                data["Country"] = Data.Country
+                data["street_address"] = Data.street_address
+                data["City"] = Data.City
+                data["state"] = Data.state
+                data["postalcode"] = Data.postalcode
+                data["phoneNumber"] = Data.phoneNumber
                 return Response(
                     {
                         "data": data,
