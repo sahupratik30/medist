@@ -33,7 +33,8 @@ class AddtoCartApiView(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        queryset = AddtoCart.objects.all()
+        user = self.request.user
+        queryset = AddtoCart.objects.filter(users=user)
         serializer = AddtoCartSerialier(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -45,3 +46,41 @@ class AddtoCartApiView(viewsets.ViewSet):
             serialized_data = AddtoCartSerialier(queryset, many=True).data
             return Response(serialized_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            addtocart = AddtoCart.objects.get(id=id)
+            serializer = AddtoCartSerialier(addtocart)
+            return Response([serializer.data], status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        id = pk
+        addtocart = AddtoCart.objects.get(id=id)
+        serializer = AddtoCartSerialier(addtocart, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            queryset = AddtoCart.objects.filter(users=request.user)
+            serializer = AddtoCartSerialier(queryset, many=True).data
+            return Response(serializer, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, pk=None):
+        id = pk
+        addtocart = AddtoCart.objects.get(id=id)
+        serializer = AddtoCartSerialier(addtocart, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            queryset = AddtoCart.objects.filter(users=request.user)
+            serializer = AddtoCartSerialier(queryset, many=True).data
+            return Response(serializer, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        id = pk
+        addtocart = AddtoCart.objects.get(id=id)
+        addtocart.delete()
+        addtocart = AddtoCart.objects.filter(users=request.user)
+        serializer = AddtoCartSerialier(addtocart, many=True).data
+        return Response(serializer, status=status.HTTP_204_NO_CONTENT)

@@ -20,6 +20,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class AddtoCartSerialier(serializers.ModelSerializer):
+    image = serializers.URLField()
+
     class Meta:
         model = AddtoCart
         fields = [

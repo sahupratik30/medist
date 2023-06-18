@@ -10,6 +10,8 @@ from .serializers import (
     SendPasswordResetEmailSerializer,
     UserPasswordResetSerializer,
 )
+from ProductApp.serializers import AddtoCartSerialier
+from ProductApp.models import AddtoCart
 from django.core import serializers
 from django.contrib.auth import authenticate
 from account.customerror import CustomRenderer
@@ -47,12 +49,18 @@ class UserRegistration(APIView):
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
         data = {}
+        alldata = []
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")
             user = authenticate(email=email, password=password)
             Data = User.objects.get(email=email)
+
+            # current user cartdata
+            cartdata = AddtoCart.objects.filter(users__email=email)
+            serializerdata = AddtoCartSerialier(cartdata, many=True).data
+
             print(Data)
             print(type(user))
             if user is not None:
@@ -66,9 +74,12 @@ class UserLogin(APIView):
                 data["state"] = Data.state
                 data["postalcode"] = Data.postalcode
                 data["phoneNumber"] = Data.phoneNumber
+                carts = {"items": serializerdata}
+                print(type(data))
                 return Response(
                     {
                         "data": data,
+                        "cart": carts,
                         "error": "false",
                         "token": token,
                         "msg": "Login successful",
@@ -88,9 +99,13 @@ class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        serializer = UserProfileSerializer(request.user)
         print(request.user)
+        print(type(request.user))
+        data = User.objects.filter(email=request.user)
+        serializer = UserProfileSerializer(data, many=True)
+        # if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, id=None, *args, **kwargs):
         data = {}

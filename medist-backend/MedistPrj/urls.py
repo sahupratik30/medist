@@ -24,8 +24,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 router = DefaultRouter()
 router.register("products", product.ProductDetailsView, basename="products")
 router.register("paymentcart", product.PaymentCartView, basename="paymentcart")
-router.register("addtocart", product.AddtoCartView, basename="AddtoCart")
-router.register("addtocartapiview", product.AddtoCartApiView, basename="AddtoCart")
+# router.register("addtocartfilter", product.AddtoCartView, basename="AddtoCart")
+router.register("addtocart", product.AddtoCartApiView, basename="AddtoCart")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("account.urls")),

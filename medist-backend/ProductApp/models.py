@@ -45,7 +45,8 @@ class AddtoCart(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     mrp = models.DecimalField(max_digits=7, decimal_places=2)
     totalPrice = models.DecimalField(max_digits=7, decimal_places=2)
-    image = models.ImageField(upload_to="cartImage/", null=True)
+    # image = models.ImageField(upload_to="cartImage/", null=True)
+    image = models.URLField(null=True)
 
     def __str__(self):
         return str(self.carts.user.id)
