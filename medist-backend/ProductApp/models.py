@@ -20,7 +20,7 @@ class ProductDetails(models.Model):
 
 
 class PaymentCart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart")
     totalQuantity = models.IntegerField(null=True, blank=True)
     totalAmount = models.DecimalField(
         max_digits=10,
@@ -34,19 +34,27 @@ class PaymentCart(models.Model):
 
 
 class AddtoCart(models.Model):
-    id = models.AutoField(primary_key=True)
-    carts = models.ForeignKey(
-        PaymentCart, on_delete=models.CASCADE, related_name="items"
+    cart = models.ForeignKey(
+        PaymentCart, on_delete=models.CASCADE, related_name="items", null=True
     )
-    users = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=200)
     manufacturer = models.CharField(max_length=300)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     mrp = models.DecimalField(max_digits=7, decimal_places=2)
-    totalPrice = models.DecimalField(max_digits=7, decimal_places=2)
+    totalPrice = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     # image = models.ImageField(upload_to="cartImage/", null=True)
     image = models.URLField(null=True)
 
     def __str__(self):
-        return str(self.carts.user.id)
+        if self.user:
+            return str(self.user.id)
+        else:
+            return "User not available"
+
+
+"""
+    def __str__(self):
+        return str(self.user.id)
+"""

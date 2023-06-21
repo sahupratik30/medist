@@ -23,15 +23,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 router = DefaultRouter()
 router.register("products", product.ProductDetailsView, basename="products")
-router.register("paymentcart", product.PaymentCartView, basename="paymentcart")
-# router.register("addtocartfilter", product.AddtoCartView, basename="AddtoCart")
-router.register("addtocart", product.AddtoCartApiView, basename="AddtoCart")
+router.register("paymentcart", product.PaymentCartViewSet, basename="paymentcart")
+router.register("cart", product.AddtoCartApiView, basename="AddtoCart")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("account.urls")),
     path("", include(router.urls)),
-    # path("addtocartapiview/", product.AddtoCartApiView.as_view()),
-    # path("addtocartapiview/<int:id>/", product.AddtoCartApiView.as_view()),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

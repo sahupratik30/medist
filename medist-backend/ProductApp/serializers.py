@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import ProductDetails, AddtoCart, PaymentCart
+from account.models import User
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -19,15 +20,15 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
-class AddtoCartSerialier(serializers.ModelSerializer):
+class AddtoCartSerializer(serializers.ModelSerializer):
     image = serializers.URLField()
 
     class Meta:
         model = AddtoCart
         fields = [
             "id",
-            "carts",
-            "users",
+            "cart",
+            "user",
             "name",
             "manufacturer",
             "quantity",
@@ -38,12 +39,12 @@ class AddtoCartSerialier(serializers.ModelSerializer):
         ]
 
     def get_cart(self, obj):
-        return obj.carts.user.email
+        return obj.cart.user.email
 
 
 class PaymentCartSerializer(serializers.ModelSerializer):
-    items = AddtoCartSerialier(many=True)
+    items = AddtoCartSerializer(many=True, required=False)
 
     class Meta:
         model = PaymentCart
-        fields = ["items", "totalQuantity", "totalAmount"]
+        fields = ["id", "user", "items", "totalQuantity", "totalAmount"]
