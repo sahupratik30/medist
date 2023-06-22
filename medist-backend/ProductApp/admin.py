@@ -22,8 +22,8 @@ class ProductAdmin(admin.ModelAdmin):
 class addtocartAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "carts",
-        "users",
+        "cart",
+        "user",
         "name",
         "manufacturer",
         "quantity",

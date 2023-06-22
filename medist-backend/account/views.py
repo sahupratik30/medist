@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from .models import User
+from ProductApp.models import PaymentCart
 from .serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
@@ -10,7 +11,7 @@ from .serializers import (
     SendPasswordResetEmailSerializer,
     UserPasswordResetSerializer,
 )
-from ProductApp.serializers import AddtoCartSerialier
+from ProductApp.serializers import AddtoCartSerializer, PaymentCartSerializer
 from ProductApp.models import AddtoCart
 from django.core import serializers
 from django.contrib.auth import authenticate
@@ -49,20 +50,13 @@ class UserRegistration(APIView):
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
         data = {}
-        alldata = []
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")
             user = authenticate(email=email, password=password)
             Data = User.objects.get(email=email)
-
             # current user cartdata
-            cartdata = AddtoCart.objects.filter(users__email=email)
-            serializerdata = AddtoCartSerialier(cartdata, many=True).data
-
-            print(Data)
-            print(type(user))
             if user is not None:
                 token = get_tokens_for_user(user)
                 data["id"] = Data.id
@@ -74,12 +68,25 @@ class UserLogin(APIView):
                 data["state"] = Data.state
                 data["postalcode"] = Data.postalcode
                 data["phoneNumber"] = Data.phoneNumber
-                carts = {"items": serializerdata}
-                print(type(data))
+                try:
+                    cart = PaymentCart.objects.get(user=Data)
+                    cartdata = AddtoCart.objects.filter(user__email=email)
+                    serializerdata = AddtoCartSerializer(cartdata, many=True).data
+                    # carts = {"items": serializerdata}
+                    totalQuantity = cart.totalQuantity
+                    totalAmount = cart.totalAmount
+                except PaymentCart.DoesNotExist:
+                    totalQuantity = 0
+                    totalAmount = 0
+                    serializerdata = []
                 return Response(
                     {
                         "data": data,
-                        "cart": carts,
+                        "cart": {
+                            "items": serializerdata,
+                            "totalQuantity": totalQuantity,
+                            "totalAmount": totalAmount,
+                        },
                         "error": "false",
                         "token": token,
                         "msg": "Login successful",

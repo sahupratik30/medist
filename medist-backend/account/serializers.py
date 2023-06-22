@@ -50,7 +50,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    carts = PaymentCartSerializer(many=True)
+    cart = PaymentCartSerializer(many=True)
 
     class Meta:
         model = User
@@ -64,7 +64,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "state",
             "postalcode",
             "phoneNumber",
-            "carts",
+            "cart",
         ]
 
     def get_cart(self, obj):
