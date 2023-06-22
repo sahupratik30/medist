@@ -65,7 +65,7 @@ const ProductCard = (props) => {
         const existingItem = _alreadyExistsInCart(pname);
         dispatch(
           updateCartData({
-            itemId: id,
+            itemId: existingItem?.id,
             data: {
               quantity: existingItem?.quantity + 1,
               price: existingItem.price,

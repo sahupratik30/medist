@@ -79,7 +79,7 @@ export const addToCart = (payload) => {
 // HTTP function to add item to cart
 export const updateCart = (itemId, payload) => {
   return new Promise((resolve, reject) => {
-    makePatchRequest(`${BASE_URL}/cart/${itemId}`, true, payload)
+    makePatchRequest(`${BASE_URL}/cart/${itemId}/`, true, payload)
       .then((res) => {
         resolve(res);
       })
