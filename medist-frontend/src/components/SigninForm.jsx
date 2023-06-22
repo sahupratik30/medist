@@ -2,7 +2,11 @@ import { useState } from "react";
 import Button from "./UI/Button";
 import { regexConfig } from "../config/regex-config";
 import { errorHandler, showToast } from "../helpers";
-import { createPaymentCart, loginUser } from "../http/http-calls";
+import {
+  createPaymentCart,
+  getPaymentCart,
+  loginUser,
+} from "../http/http-calls";
 import { useDispatch } from "react-redux";
 import { setAccessToken, setUserData } from "../redux/slices/auth-slice";
 import { useNavigate } from "react-router-dom";
@@ -125,7 +129,10 @@ const SigninForm = () => {
       const res = await loginUser(payload);
       dispatch(setAccessToken(res?.token?.access));
       dispatch(setUserData(res?.data));
-      await createPaymentCart();
+      const data = await getPaymentCart();
+      if (!data?.length) {
+        await createPaymentCart();
+      }
       if (res?.cart?.items?.length) {
         dispatch(
           setCartData({

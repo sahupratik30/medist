@@ -104,6 +104,20 @@ export const createPaymentCart = (payload) => {
   });
 };
 
+// HTTP function to get payment cart
+export const getPaymentCart = () => {
+  return new Promise((resolve, reject) => {
+    makeGetRequest(`${BASE_URL}/paymentcart/`, true)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log("API call error>>", e);
+        reject(e);
+      });
+  });
+};
+
 // HTTP function to remove cart item
 export const removeFromCart = (productId, payload) => {
   return new Promise((resolve, reject) => {
