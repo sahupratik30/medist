@@ -70,8 +70,6 @@ class UserLogin(APIView):
                 data["phoneNumber"] = Data.phoneNumber
                 try:
                     cart = PaymentCart.objects.get(user=Data)
-                    # cart_data = AddtoCart.objects.filter(cart=cart)
-                    # cart_serializer_data = AddtoCartSerializer(cart_data, many=True).data
                     cartdata = AddtoCart.objects.filter(user__email=email)
                     serializerdata = AddtoCartSerializer(cartdata, many=True).data
                     # carts = {"items": serializerdata}
@@ -89,8 +87,6 @@ class UserLogin(APIView):
                             "totalQuantity": totalQuantity,
                             "totalAmount": totalAmount,
                         },
-                        # "totalQuantity": totalQuantity,
-                        # "totalAmount": totalAmount,
                         "error": "false",
                         "token": token,
                         "msg": "Login successful",

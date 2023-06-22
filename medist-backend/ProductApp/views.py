@@ -126,32 +126,57 @@ class AddtoCartApiView(viewsets.ViewSet):
             return Response([serializer.data], status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, pk=None):
-        id = pk
-        addtocart = AddtoCart.objects.get(id=id)
-        serializer = AddtoCartSerializer(addtocart, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            queryset = AddtoCart.objects.filter(user=request.user)
-            serializer = AddtoCartSerializer(queryset, many=True).data
-            return Response(serializer, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def partial_update(self, request, pk=None):
-        id = pk
-        addtocart = AddtoCart.objects.get(id=id)
-        serializer = AddtoCartSerializer(addtocart, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            queryset = AddtoCart.objects.filter(user=request.user)
-            serializer = AddtoCartSerializer(queryset, many=True).data
-            return Response(serializer, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            id = pk
+            addtocart = AddtoCart.objects.get(id=id, user=request.user)
+            serializer = AddtoCartSerializer(addtocart, data=request.data, partial=True)
+            if serializer.is_valid():
+                quantity = serializer.validated_data.get("quantity")
+                if quantity is not None:
+                    if quantity == 0:
+                        addtocart.delete()
+                        paymentcart = PaymentCart.objects.get(user=request.user)
+                        self.Calculate_totalQuantity_totalAmount(paymentcart)
+                        queryset = AddtoCart.objects.filter(user=request.user)
+                        serialized_data = AddtoCartSerializer(queryset, many=True).data
+                        cart = {
+                            "items": serialized_data,  # cart items
+                            "totalQuantity": paymentcart.totalQuantity,
+                            "totalAmount": paymentcart.totalAmount,
+                        }
+                        return Response(cart, status=status.HTTP_201_CREATED)
+                    else:
+                        print("price", serializer.validated_data.get("price"))
+                        print("quantity", serializer.validated_data.get("quantity"))
+                        price = serializer.validated_data.get("price")
+                        totalPrice = price * quantity
+                        serializer.save(totalPrice=totalPrice)
+                        # paymentcart
+                        paymentcart = PaymentCart.objects.get(user=request.user)
+                        self.Calculate_totalQuantity_totalAmount(paymentcart)
+                        # all cart item
+                        queryset = AddtoCart.objects.filter(user=request.user)
+                        serialized_data = AddtoCartSerializer(queryset, many=True).data
+                        cart = {
+                            "items": serialized_data,  # cart items
+                            "totalQuantity": paymentcart.totalQuantity,
+                            "totalAmount": paymentcart.totalAmount,
+                        }
+                        return Response(cart, status=status.HTTP_201_CREATED)
+                return Response({"error": "quantity field is required"})
+        except AddtoCart.DoesNotExist():
+            # return Response({"error": "cart item not found"})
+            return Response(serializer.errors)
 
     def destroy(self, request, pk=None):
         id = pk
-        addtocart = AddtoCart.objects.get(id=id)
+        # addtocart data
+        addtocart = AddtoCart.objects.get(id=id, user=request.user)
         addtocart.delete()
+        # paymentcart data
+        cart = PaymentCart.objects.get(user=request.user)
+        self.Calculate_totalQuantity_totalAmount(cart)
         addtocart = AddtoCart.objects.filter(user=request.user)
         serializer = AddtoCartSerializer(addtocart, many=True).data
         return Response(serializer, status=status.HTTP_204_NO_CONTENT)
