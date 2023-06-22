@@ -2,10 +2,15 @@ import { useState } from "react";
 import Button from "./UI/Button";
 import { regexConfig } from "../config/regex-config";
 import { errorHandler, showToast } from "../helpers";
-import { loginUser } from "../http/http-calls";
+import {
+  createPaymentCart,
+  getPaymentCart,
+  loginUser,
+} from "../http/http-calls";
 import { useDispatch } from "react-redux";
 import { setAccessToken, setUserData } from "../redux/slices/auth-slice";
 import { useNavigate } from "react-router-dom";
+import { setCartData } from "../redux/slices/cart-slice";
 
 const SigninForm = () => {
   const [formFields, setFormFields] = useState({
@@ -124,6 +129,19 @@ const SigninForm = () => {
       const res = await loginUser(payload);
       dispatch(setAccessToken(res?.token?.access));
       dispatch(setUserData(res?.data));
+      const data = await getPaymentCart();
+      if (!data?.length) {
+        await createPaymentCart();
+      }
+      if (res?.cart?.items?.length) {
+        dispatch(
+          setCartData({
+            items: res?.cart?.items,
+            totalQuantity: res?.cart?.totalQuantity,
+            totalAmount: res?.cart?.totalAmount,
+          })
+        );
+      }
       showToast("Logged in successfully", "success", 2000, "login");
       setLoading(false);
       navigate("/");

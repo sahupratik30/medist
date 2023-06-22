@@ -6,13 +6,16 @@ import Button from "./UI/Button";
 import Card from "./UI/Card";
 import { resetCart } from "../redux/slices/cart-slice";
 import { isUserAuthenticated } from "../guards/auth-guard";
+import Swal from "sweetalert2";
 
-const PaymentDetails = ({ forPayment }) => {
+const PaymentDetails = ({ forPayment, store }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state?.cart?.items);
   const totalAmount = useSelector((state) => state?.cart?.totalAmount);
   const isAuthenticated = isUserAuthenticated();
+
+  console.log("STORE>>>", store);
 
   const totalMrp = cartItems?.reduce(
     (acc, item) => acc + item.quantity * item.mrp,
@@ -25,6 +28,19 @@ const PaymentDetails = ({ forPayment }) => {
 
   const _handleClick = () => {
     isAuthenticated ? navigate("/payment") : navigate("/signin");
+  };
+
+  // function to handle payment
+  const _handlePayment = () => {
+    if (store === null) {
+      Swal.fire({
+        icon: "error",
+        text: "Please select a store first!",
+        confirmButtonColor: "#ee0000",
+      });
+      return;
+    }
+    // proceed to payment
   };
 
   return (
@@ -53,7 +69,10 @@ const PaymentDetails = ({ forPayment }) => {
             {amountTotal}
           </p>
         </div>
-        <Button className="primary-btn h-max" onClick={_handleClick}>
+        <Button
+          className="primary-btn h-max"
+          onClick={!forPayment ? _handleClick : _handlePayment}
+        >
           {forPayment ? "PAY NOW" : "PROCEED"}
         </Button>
       </div>
