@@ -3,13 +3,20 @@ import Card from "./UI/Card";
 import Button from "./UI/Button";
 import { formatPrice, showToast } from "./../helpers";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addItemToCart } from "../redux/slices/cart-slice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItemToCart,
+  addProductToCart,
+  updateCartData,
+} from "../redux/slices/cart-slice";
 import Swal from "sweetalert2";
+import { isUserAuthenticated } from "../guards/auth-guard";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { items } = useSelector((state) => state?.cart || {});
+  const isAuthenticated = isUserAuthenticated();
   const {
     id,
     pname,
@@ -32,6 +39,13 @@ const ProductCard = (props) => {
     })
     .join(" ");
 
+  // function to check if item alredy exists in the cart
+  const _alreadyExistsInCart = (productName) => {
+    const existingItem = items.find((item) => item.name === productName);
+    if (existingItem) return existingItem;
+    return false;
+  };
+
   const _addToCartHandler = () => {
     dispatch(
       addItemToCart({
@@ -44,6 +58,34 @@ const ProductCard = (props) => {
         image,
       })
     );
+
+    if (isAuthenticated) {
+      // if item already exists in cart then call update cart else add to cart
+      if (_alreadyExistsInCart(pname)) {
+        const existingItem = _alreadyExistsInCart(pname);
+        dispatch(
+          updateCartData({
+            itemId: id,
+            data: {
+              quantity: existingItem?.quantity + 1,
+              price: existingItem.price,
+            },
+          })
+        );
+      } else {
+        dispatch(
+          addProductToCart({
+            name: pname,
+            manufacturer,
+            quantity: 1,
+            price: list_price,
+            mrp: mrp_price,
+            image,
+          })
+        );
+      }
+    }
+
     Swal.fire({
       icon: "success",
       text: "Item added successfully!",

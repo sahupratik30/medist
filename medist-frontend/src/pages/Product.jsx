@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { formatPrice } from "../helpers";
 import { addItemToCart } from "../redux/slices/cart-slice";
 import Swal from "sweetalert2";
+import { isUserAuthenticated } from "../guards/auth-guard";
 
 const defaultProductState = { count: 1 };
 const productReducer = (state, action) => {
@@ -22,6 +23,7 @@ const Product = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
+  const isAuthenticated = isUserAuthenticated();
 
   let product, listPrice, mrpPrice, transformedCategory;
 
@@ -53,6 +55,13 @@ const Product = () => {
     dispatchProductCount({ type: "DECREMENT" });
   };
 
+  // function to check if item alredy exists in the cart
+  const _alreadyExistsInCart = (productName) => {
+    const existingItem = items.find((item) => item.name === productName);
+    if (existingItem) return existingItem;
+    return false;
+  };
+
   const _addToCartHandler = () => {
     dispatch(
       addItemToCart({
@@ -65,6 +74,33 @@ const Product = () => {
         image: product?.image,
       })
     );
+    if (isAuthenticated) {
+      // if item already exists in cart then call update cart else add to cart
+      if (_alreadyExistsInCart(product?.pname)) {
+        const existingItem = _alreadyExistsInCart(product?.pname);
+        dispatch(
+          updateCartData({
+            itemId: id,
+            data: {
+              quantity: existingItem?.quantity + productCount.count,
+              price: existingItem.price,
+            },
+          })
+        );
+      } else {
+        dispatch(
+          addProductToCart({
+            name: product?.pname,
+            manufacturer: product?.manufacturer,
+            quantity: productCount.count,
+            price: product?.list_price,
+            mrp: product?.mrp_price,
+            image: product?.image,
+          })
+        );
+      }
+    }
+
     Swal.fire({
       icon: "success",
       text: "Item added successfully!",
