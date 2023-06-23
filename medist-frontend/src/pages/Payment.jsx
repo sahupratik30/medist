@@ -3,15 +3,26 @@ import { PaymentDetails } from "../components";
 import StoreDetails from "../components/StoreDetails";
 import Card from "../components/UI/Card";
 import { useState } from "react";
+import { isUserAuthenticated } from "../guards/auth-guard";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Payment = () => {
   const [store, setStore] = useState(null);
   const pharmacies = useSelector((state) => state?.pharmacies);
+  const isAuthenticated = isUserAuthenticated();
+  const navigate = useNavigate();
 
   // function to handle store change
   const _onChangeStore = (storeName) => {
     setStore(storeName);
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="mx-auto my-6 max-w-[996px] px-4">

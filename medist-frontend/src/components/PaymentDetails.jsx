@@ -1,12 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { formatPrice } from "../helpers";
+import { errorHandler, formatPrice } from "../helpers";
 import Button from "./UI/Button";
 import Card from "./UI/Card";
 import { resetCart } from "../redux/slices/cart-slice";
 import { isUserAuthenticated } from "../guards/auth-guard";
 import Swal from "sweetalert2";
+import { createOrder, verifySignature } from "../http/http-calls";
+import { RAZORPAY_KEY } from "../config";
 
 const PaymentDetails = ({ forPayment, store }) => {
   const navigate = useNavigate();
@@ -25,6 +27,80 @@ const PaymentDetails = ({ forPayment, store }) => {
   const amountTotal = formatPrice(totalAmount);
   const mrpTotal = formatPrice(totalMrp);
   const discountTotal = formatPrice(totalDiscount);
+
+  // function to load script for Razorpay
+  const _loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  // function to enable Razorpay
+  const _displayRazorpay = async () => {
+    try {
+      const res = await _loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
+
+      if (!res) {
+        alert(
+          "Failure loading the Razorpay SDK. PLease make sure you are connected to the internet"
+        );
+        return;
+      }
+
+      const orderData = await createOrder({
+        amount: +totalAmount?.toFixed(2),
+      });
+
+      const { amount, currency, order_id } = orderData;
+
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: amount.toString(),
+        currency: currency,
+        name: "Medist",
+        description: "Complete Payment",
+        image: logo,
+        order_id: order_id,
+        handler: async function (response) {
+          const razorpay_paymentId = response.razorpay_payment_id;
+          const razorpay_orderId = response.razorpay_order_id;
+          const razorpay_signature = response.razorpay_signature;
+
+          const res = await verifySignature({
+            razorpay_paymentId,
+            razorpay_orderId,
+            razorpay_signature,
+          });
+          if (!res?.error) {
+            alert(res?.status);
+            // _makePayment();
+          }
+        },
+        prefill: {
+          name: "John Doe",
+          email: "doejon@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#04c300",
+        },
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
 
   const _handleClick = () => {
     isAuthenticated ? navigate("/payment") : navigate("/signin");
