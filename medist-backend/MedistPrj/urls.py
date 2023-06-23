@@ -29,6 +29,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("account.urls")),
     path("", include(router.urls)),
+    path("createOrder/", product.createOrder),
+    path("verifySignature/", product.verifySignature),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
