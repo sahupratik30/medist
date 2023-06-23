@@ -36,7 +36,8 @@ def createOrder(request):
             "order_id": payment["id"],
             "amount": payment["amount"],
             "currency": payment["currency"],
-        }
+        },
+        status=status.HTTP_201_CREATED
     )
 
 

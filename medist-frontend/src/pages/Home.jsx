@@ -30,7 +30,12 @@ const Home = () => {
   useEffect(() => {
     if (pharmacies?.length) {
       const nearbyPharmacies = formatPlaceResults(pharmacies);
-      console.log("Pharmacies>>", nearbyPharmacies);
+      console.log(
+        "Pharmacies>>",
+        pharmacies,
+        "Formatted Pharmacies>>",
+        nearbyPharmacies
+      );
       dispatch(setPharmacies(nearbyPharmacies));
     }
   }, [pharmacies]);
