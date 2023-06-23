@@ -22,7 +22,7 @@ def createOrder(request):
     global client
     data = request.data
 
-    amount = int(float(data["amount"]))
+    amount = float(data["amount"])
 
     client = razorpay.Client(
         auth=("rzp_test_Woa7zkh2gbF0dT", "KrcPN809yFQBZpdD7jIT3DGP")
@@ -36,7 +36,8 @@ def createOrder(request):
             "order_id": payment["id"],
             "amount": payment["amount"],
             "currency": payment["currency"],
-        }
+        },
+        status=status.HTTP_201_CREATED
     )
 
 

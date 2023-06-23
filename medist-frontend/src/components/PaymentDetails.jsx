@@ -9,12 +9,16 @@ import { isUserAuthenticated } from "../guards/auth-guard";
 import Swal from "sweetalert2";
 import { createOrder, verifySignature } from "../http/http-calls";
 import { RAZORPAY_KEY } from "../config";
+import logo from "../assets/images/logo.png";
+import { useState } from "react";
 
 const PaymentDetails = ({ forPayment, store }) => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state?.cart?.items);
   const totalAmount = useSelector((state) => state?.cart?.totalAmount);
+  const { user } = useSelector((state) => state?.auth || {});
   const isAuthenticated = isUserAuthenticated();
 
   console.log("STORE>>>", store);
@@ -46,6 +50,7 @@ const PaymentDetails = ({ forPayment, store }) => {
   // function to enable Razorpay
   const _displayRazorpay = async () => {
     try {
+      setLoading(true);
       const res = await _loadScript(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
@@ -58,7 +63,7 @@ const PaymentDetails = ({ forPayment, store }) => {
       }
 
       const orderData = await createOrder({
-        amount: +totalAmount?.toFixed(2),
+        amount: (+totalAmount * 100)?.toFixed(2),
       });
 
       const { amount, currency, order_id } = orderData;
@@ -81,15 +86,16 @@ const PaymentDetails = ({ forPayment, store }) => {
             razorpay_orderId,
             razorpay_signature,
           });
+
           if (!res?.error) {
             alert(res?.status);
             // _makePayment();
           }
         },
         prefill: {
-          name: "John Doe",
-          email: "doejon@example.com",
-          contact: "9999999999",
+          name: user?.username,
+          email: user?.email,
+          contact: user?.phoneNumber,
         },
         theme: {
           color: "#04c300",
@@ -97,8 +103,10 @@ const PaymentDetails = ({ forPayment, store }) => {
       };
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
+      setLoading(false);
     } catch (error) {
       errorHandler(error);
+      setLoading(false);
     }
   };
 
@@ -117,6 +125,7 @@ const PaymentDetails = ({ forPayment, store }) => {
       return;
     }
     // proceed to payment
+    _displayRazorpay();
   };
 
   return (
@@ -147,9 +156,10 @@ const PaymentDetails = ({ forPayment, store }) => {
         </div>
         <Button
           className="primary-btn h-max"
+          disabled={loading}
           onClick={!forPayment ? _handleClick : _handlePayment}
         >
-          {forPayment ? "PAY NOW" : "PROCEED"}
+          {loading ? "Please wait..." : forPayment ? "PAY NOW" : "PROCEED"}
         </Button>
       </div>
     </Card>
