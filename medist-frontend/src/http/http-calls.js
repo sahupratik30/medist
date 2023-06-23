@@ -131,3 +131,31 @@ export const removeFromCart = (productId, payload) => {
       });
   });
 };
+
+// HTTP function to create order
+export const createOrder = (payload) => {
+  return new Promise((resolve, reject) => {
+    makePostRequest(`${BASE_URL}/createOrder/`, true, payload)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log("API call error>>", e);
+        reject(e);
+      });
+  });
+};
+
+// HTTP function to create order
+export const verifySignature = (payload) => {
+  return new Promise((resolve, reject) => {
+    makePostRequest(`${BASE_URL}/verifySignature/`, true, payload)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log("API call error>>", e);
+        reject(e);
+      });
+  });
+};
