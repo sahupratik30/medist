@@ -18,10 +18,10 @@ const Order = ({ item }) => {
       {/* order details to be shown in desktop view */}
       <div className="hidden flex-col gap-1 md:flex">
         <div className="flex items-center gap-1">
-          <span className="h-[10px] w-[10px] rounded-full bg-primary" />
-          <p className="text-sm font-semibold">Delivered on May 24, 2023</p>
+          <span className="h-[10px] w-[10px] rounded-full bg-orange-400" />
+          <p className="text-sm font-semibold">Ordered on June 24, 2023</p>
         </div>
-        <p className="text-[12px]">Your order has been delivered</p>
+        <p className="text-[12px]">Your order is in progress</p>
       </div>
     </Card>
   );

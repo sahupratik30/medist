@@ -88,8 +88,9 @@ const PaymentDetails = ({ forPayment, store }) => {
           });
 
           if (!res?.error) {
-            alert(res?.status);
-            // _makePayment();
+            // clear cart and redirect to checkout page
+            dispatch(resetCart());
+            navigate("/checkout");
           }
         },
         prefill: {

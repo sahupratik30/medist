@@ -51,7 +51,7 @@ export const fetchAllProducts = () => {
 // HTTP function to update user profile
 export const updateUserProfile = (userId, payload) => {
   return new Promise((resolve, reject) => {
-    makePatchRequest(`${BASE_URL}/profile/${userId}`, true, payload)
+    makePatchRequest(`${BASE_URL}/updateprofile/${userId}/`, true, payload)
       .then((res) => {
         resolve(res);
       })

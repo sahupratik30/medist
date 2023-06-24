@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import Order from "../components/Orders/Order";
 import Card from "../components/UI/Card";
+import { isUserAuthenticated } from "../guards/auth-guard";
 
 const item = {
   id: 2,
@@ -13,6 +15,14 @@ const item = {
 };
 
 const Orders = () => {
+  const isAuthenticated = isUserAuthenticated();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className="mx-auto my-6 max-w-[996px] px-4">
       <h1 className="mb-10 text-lg font-semibold xs:text-xl s:text-2xl">
