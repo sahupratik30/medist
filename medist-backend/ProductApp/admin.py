@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ProductApp.models import ProductDetails, AddtoCart, PaymentCart
+from ProductApp.models import ProductDetails, AddtoCart, PaymentCart, ViewOrder
 
 # Register your models here.
 
@@ -38,6 +38,11 @@ class paymentcartAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "totalQuantity", "totalAmount"]
 
 
+class ViewOrderAdmin(admin.ModelAdmin):
+    list_display = ["id", "totalQuantity", "totalAmount", "items", "created_at"]
+
+
+admin.site.register(ViewOrder, ViewOrderAdmin)
 admin.site.register(PaymentCart, paymentcartAdmin)
 admin.site.register(AddtoCart, addtocartAdmin)
 admin.site.register(ProductDetails, ProductAdmin)

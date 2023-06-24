@@ -10,6 +10,7 @@ from .serializers import (
     UserChangePasswordSerializer,
     SendPasswordResetEmailSerializer,
     UserPasswordResetSerializer,
+    UserProfileUpdateSerializer,
 )
 from ProductApp.serializers import AddtoCartSerializer, PaymentCartSerializer
 from ProductApp.models import AddtoCart
@@ -71,14 +72,16 @@ class UserLogin(APIView):
                 try:
                     cart = PaymentCart.objects.get(user=Data)
                     cartdata = AddtoCart.objects.filter(user__email=email)
-                    serializerdata = AddtoCartSerializer(cartdata, many=True).data
-                    # carts = {"items": serializerdata}
+                    # serializerdata = AddtoCartSerializer(cartdata, many=True).data
                     totalQuantity = cart.totalQuantity
                     totalAmount = cart.totalAmount
                 except PaymentCart.DoesNotExist:
                     totalQuantity = 0
                     totalAmount = 0
-                    serializerdata = []
+                    cartdata = None
+                serializerdata = (
+                    AddtoCartSerializer(cartdata, many=True).data if cartdata else []
+                )
                 return Response(
                     {
                         "data": data,
@@ -120,18 +123,8 @@ class UserProfile(APIView):
         user = User.objects.get(id=id)
         print("user", user)
         serializer = UserProfileSerializer(user, request.data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             serializer.save()
-            """
-            data["id"] = request.data.get("id")
-            data["username"] = request.data.get("username")
-            data["email"] = request.data.get("email")
-            data["Country"] = request.data.get("Country")
-            data["street_address"] = request.data.get("street_address")
-            data["City"] = request.data.get("City")
-            data["state"] = request.data.get("state")
-            data["postalcode"] = request.data.get("postalcode")
-            """
             print(request.data)
             return Response(
                 serializer.data,
@@ -193,3 +186,13 @@ class UserPasswordReset(APIView):
         return Response(
             {"msg": "Password Reset Successfully"}, status=status.HTTP_200_OK
         )
+
+
+class UserProfileView(APIView):
+    def patch(self, request, id=None, format=None):
+        user = User.objects.get(id=id)
+        serializer = UserProfileUpdateSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

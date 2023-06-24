@@ -54,7 +54,12 @@ class AddtoCart(models.Model):
             return "User not available"
 
 
-"""
+class ViewOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    items = models.TextField()
+    totalAmount = models.DecimalField(max_digits=7, decimal_places=2)
+    totalQuantity = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return str(self.user.id)
-"""
+        return str(self.id)

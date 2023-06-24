@@ -71,6 +71,22 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return obj.carts.user.email
 
 
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "Country",
+            "street_address",
+            "City",
+            "state",
+            "postalcode",
+            "phoneNumber",
+        ]
+
+
 class UserChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         max_length=100, style={"input_type": "password"}, write_only=True

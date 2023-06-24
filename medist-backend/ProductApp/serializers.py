@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ProductDetails, AddtoCart, PaymentCart
+from .models import ProductDetails, AddtoCart, PaymentCart, ViewOrder
 from account.models import User
 
 
@@ -48,3 +48,11 @@ class PaymentCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentCart
         fields = ["id", "user", "items", "totalQuantity", "totalAmount"]
+
+
+class ViewOrderSerializer(serializers.ModelSerializer):
+    items = serializers.ListField(child=serializers.DictField())
+
+    class Meta:
+        model = ViewOrder
+        fields = ["items", "totalQuantity", "totalAmount"]

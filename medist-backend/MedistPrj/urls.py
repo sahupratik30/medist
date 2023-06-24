@@ -25,6 +25,7 @@ router = DefaultRouter()
 router.register("products", product.ProductDetailsView, basename="products")
 router.register("paymentcart", product.PaymentCartViewSet, basename="paymentcart")
 router.register("cart", product.AddtoCartApiView, basename="AddtoCart")
+router.register("vieworder", product.ViewOrderFunction, basename="vieworder")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("account.urls")),
