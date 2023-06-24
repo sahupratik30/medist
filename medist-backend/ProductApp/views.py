@@ -1,6 +1,11 @@
 from django.shortcuts import render
-from .serializers import ProductSerializer, PaymentCartSerializer, AddtoCartSerializer
-from .models import ProductDetails, PaymentCart, AddtoCart
+from .serializers import (
+    ProductSerializer,
+    PaymentCartSerializer,
+    AddtoCartSerializer,
+    ViewOrderSerializer,
+)
+from .models import ProductDetails, PaymentCart, AddtoCart, ViewOrder
 from account.serializers import UserProfileSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -37,7 +42,7 @@ def createOrder(request):
             "amount": payment["amount"],
             "currency": payment["currency"],
         },
-        status=status.HTTP_201_CREATED
+        status=status.HTTP_201_CREATED,
     )
 
 
@@ -209,7 +214,7 @@ class AddtoCartApiView(viewsets.ViewSet):
                         }
                         return Response(cart, status=status.HTTP_201_CREATED)
                 return Response({"error": "quantity field is required"})
-        except AddtoCart.DoesNotExist():
+        except AddtoCart.DoesNotExist:
             # return Response({"error": "cart item not found"})
             return Response(serializer.errors)
 
@@ -224,3 +229,35 @@ class AddtoCartApiView(viewsets.ViewSet):
         addtocart = AddtoCart.objects.filter(user=request.user)
         serializer = AddtoCartSerializer(addtocart, many=True).data
         return Response(serializer, status=status.HTTP_204_NO_CONTENT)
+
+
+class ViewOrderFunction(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request):
+        user = request.user
+
+        # view order data
+        order_data = {
+            "user": request.data.get("user"),
+            "items": request.data.get("items"),
+            "totalQuantity": request.data.get("totalQuantity"),
+            "totalAmount": request.data.get("totalAmount"),
+        }
+
+        orderSerializer = ViewOrderSerializer(data=order_data)
+
+        if orderSerializer.is_valid():
+            order = orderSerializer.save()
+
+            # Delete the cart items
+            AddtoCart.objects.filter(cart__user=user).delete()
+
+            paymentcart = PaymentCart.objects.get(user=user)
+            paymentcart.totalQuantity = 0
+            paymentcart.totalAmount = 0
+            paymentcart.save()
+
+            return Response(orderSerializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
