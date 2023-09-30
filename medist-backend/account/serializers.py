@@ -5,6 +5,7 @@ from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.utils import Util
+from email_validator import EmailSyntaxError, EmailUndeliverableError
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -51,6 +52,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     cart = PaymentCartSerializer(many=True)
+    # email = serializers.CharField(max_length=100, null=False)
 
     class Meta:
         model = User
@@ -66,6 +68,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "phoneNumber",
             "cart",
         ]
+
+    """def validate(self, attrs):
+        if EmailSyntaxError:
+            raise EmailSyntaxError("Email is not correct")
+        elif len(self.email) < 3:
+            raise ValueError("Please,enter Email Address")
+        else:
+            pass
+"""
 
     def get_cart(self, obj):
         return obj.carts.user.email

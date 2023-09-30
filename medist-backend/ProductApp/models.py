@@ -55,7 +55,7 @@ class AddtoCart(models.Model):
 
 
 class ViewOrder(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     items = models.TextField()
     totalAmount = models.DecimalField(max_digits=7, decimal_places=2)
     totalQuantity = models.IntegerField()

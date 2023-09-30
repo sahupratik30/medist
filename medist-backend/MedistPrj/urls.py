@@ -21,6 +21,7 @@ from ProductApp import views as product
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+
 router = DefaultRouter()
 router.register("products", product.ProductDetailsView, basename="products")
 router.register("paymentcart", product.PaymentCartViewSet, basename="paymentcart")
@@ -33,5 +34,6 @@ urlpatterns = [
     path("createOrder/", product.createOrder),
     path("verifySignature/", product.verifySignature),
 ]
+
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

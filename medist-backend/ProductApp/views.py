@@ -239,20 +239,20 @@ class ViewOrderFunction(viewsets.ViewSet):
 
         # view order data
         order_data = {
-            "user": request.data.get("user"),
+            # "user": request.data.get("user"),
             "items": request.data.get("items"),
             "totalQuantity": request.data.get("totalQuantity"),
             "totalAmount": request.data.get("totalAmount"),
         }
 
         orderSerializer = ViewOrderSerializer(data=order_data)
+        # geolocation ranges 250-300
 
         if orderSerializer.is_valid():
             order = orderSerializer.save()
 
             # Delete the cart items
             AddtoCart.objects.filter(cart__user=user).delete()
-
             paymentcart = PaymentCart.objects.get(user=user)
             paymentcart.totalQuantity = 0
             paymentcart.totalAmount = 0

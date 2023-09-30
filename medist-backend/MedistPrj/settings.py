@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
-import corsheaders
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -161,7 +161,8 @@ EMAIL_PORT = 587
 EMAIL_HOST = os.environ.get("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_USE_TLS = True"""
+TOKEN_EXPIRED_AFTER_SECONDS = 3600
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=345),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=TOKEN_EXPIRED_AFTER_SECONDS),
+    "REFRESH_TOKEN_LIFETIME": timedelta(seconds=TOKEN_EXPIRED_AFTER_SECONDS),
 }

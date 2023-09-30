@@ -84,7 +84,6 @@ class User(AbstractBaseUser):
     state = models.CharField(max_length=50, null=True)
     postalcode = models.IntegerField(null=True)
     phoneNumber = models.IntegerField(null=True)
-
     objects = UserManager()
 
     USERNAME_FIELD = "email"
